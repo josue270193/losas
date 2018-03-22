@@ -1,0 +1,27 @@
+{
+  "name": "losas-web",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "classnames": "latest",
+    "material-ui": "^1.0.0-beta.37",
+    "material-ui-icons": "1.0.0-beta.36",
+    "material-ui-pickers": "^1.0.0-rc.3",
+    "moment": "^2.20.1",
+    "prop-types": "^15.6.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "^1.1.1",
+    "typeface-roboto": "0.0.54",
+    "typography": "^0.16.6"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
