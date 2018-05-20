@@ -1,13 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {IconButton, Snackbar, withStyles} from "material-ui";
-import CloseIcon from 'material-ui-icons/Close';
+import {IconButton, Snackbar, Typography, withStyles} from "@material-ui/core";
+import CloseIcon from '@material-ui/icons/Close';
 
 const styles = (theme) => ({
     close: {
         width: theme.spacing.unit * 4,
         height: theme.spacing.unit * 4,
     },
+    mensajeSnackBar: {
+        whiteSpace: 'pre-wrap',
+        color: 'white'
+    }
 });
 
 class MensajeError extends React.Component {
@@ -34,12 +38,17 @@ class MensajeError extends React.Component {
             <Snackbar
                 anchorOrigin={{ vertical: 'top', horizontal: 'center'}}
                 open={open}
-                autoHideDuration={5000}
                 onClose={this.onCerrarMensaje}
                 SnackbarContentProps={{
                     'aria-describedby': 'message-id',
                 }}
-                message={<span id="message-id">{mensaje}</span>}
+                message={
+                    <Typography
+                        id="message-id"
+                        variant="headline"
+                        className={classes.mensajeSnackBar}>{mensaje}
+                    </Typography>
+                }
                 action={[
                     <IconButton
                         key="cerrar"

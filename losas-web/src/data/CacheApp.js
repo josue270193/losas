@@ -1,6 +1,36 @@
 import React from 'react';
 import ReactDOM from "react-dom";
+import axios from 'axios';
 import MensajeError from "../component/MensajeError";
+import {URL_HEALTH, URL_INFO} from "./URLConfig";
+
+export function requestInfo(){
+    return new Promise((resolve, reject) => {
+        axios.get(URL_INFO)
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((error) => {
+                let mensaje = procesarError(error);
+                reject(mensaje);
+            })
+        ;
+    });
+}
+
+export function requestHealth(){
+    return new Promise((resolve, reject) => {
+        axios.get(URL_HEALTH)
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((error) => {
+                let mensaje = procesarError(error);
+                reject(mensaje);
+            })
+        ;
+    });
+}
 
 function procesarError(error) {
     let mensaje;
@@ -20,8 +50,7 @@ function procesarError(error) {
 
 export function mostrarMensajeError(mensaje) {
     ReactDOM.render(
-        <MensajeError open={true} mensaje={mensaje}/>,
-        document.getElementById('mensaje_error')
+        <MensajeError open={true} mensaje={mensaje}/>, document.getElementById('mensaje_error')
     );
 }
 

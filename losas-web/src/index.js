@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 import BrowserRouter from "react-router-dom/BrowserRouter";
 import App from './component/App';
 import registerServiceWorker from './registerServiceWorker';
-import {activarCache} from './data/CacheApp'
 
 ReactDOM.render(
     <BrowserRouter basename={process.env.REACT_APP_ROUTER_BASE || ''}>
@@ -15,6 +14,5 @@ ReactDOM.render(
     ,
     document.getElementById('root')
 );
-activarCache();
 registerServiceWorker();
 

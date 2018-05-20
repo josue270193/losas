@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {AppBar, Divider, Drawer, IconButton, List, Toolbar, Typography, withStyles} from "material-ui";
+import {AppBar, Collapse, Divider, Drawer, IconButton, List, Toolbar, Typography} from "@material-ui/core";
+import {withStyles} from "@material-ui/core/styles";
+import {indigo} from "@material-ui/core/colors";
 import Link from "react-router-dom/Link";
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import HelpIcon from '@material-ui/icons/Help';
 import RouterMain from "../route/RouterApp";
-import IconUser from "./IconUser";
-
-import {funcionesItems, opcionesItems} from '../data/DataMenu';
-
-import indigo from "material-ui/es/colors/indigo";
-import MenuIcon from 'material-ui-icons/Menu';
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
-import ChevronRightIcon from 'material-ui-icons/ChevronRight';
+import {funcionesItems} from '../route/RouterItemMenu';
+import {URL_DOCUMENTACION} from "../data/URLConfig";
 
 const drawerWidth = 240;
 
@@ -33,11 +33,14 @@ const styles = theme => ({
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
-        })
+        }),
+        [theme.breakpoints.up('md')]: {
+            width: `calc(100%)`,
+        }
     },
     appBarShift: {
         marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
+        width: `calc(100%)`,
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen
@@ -54,6 +57,7 @@ const styles = theme => ({
         position: 'relative',
         height: '100%',
         width: drawerWidth,
+        overflowX: 'hidden',
         transition: theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen
@@ -106,9 +110,12 @@ const styles = theme => ({
 
 class BodyApp extends React.Component {
 
-    state = {
-        menuActive: false
-    };
+    constructor(prop){
+        super(prop);
+        this.state = {
+            menuActive: window.innerWidth > 760
+        };
+    }
 
     onMenuAbrir = () => {
         this.setState({ menuActive: true });
@@ -118,6 +125,10 @@ class BodyApp extends React.Component {
         this.setState({ menuActive: false });
     };
 
+    onHelp = () => {
+        window.location.href = URL_DOCUMENTACION;
+    };
+
     render() {
         const { classes, theme } = this.props;
 
@@ -125,16 +136,30 @@ class BodyApp extends React.Component {
             <div className={classes.root}>
                 <div id="mensaje_error"/>
                 <div className={classes.appFrame}>
-                    <AppBar className={classNames(classes.appBar, this.state.menuActive && classes.appBarShift)}>
-                        <Toolbar disableGutters={!this.state.menuActive}>
-                            <IconButton
-                                color="inherit"
-                                aria-label="Abrir Menu"
-                                onClick={this.onMenuAbrir}
-                                className={classNames(classes.menuButton, this.state.menuActive && classes.hide)}
-                            >
-                                <MenuIcon />
-                            </IconButton>
+                    <AppBar
+                        position="absolute"
+                        className={classNames(classes.appBar, this.state.menuActive && classes.appBarShift)}
+                    >
+                        <Toolbar disableGutters={true}>
+                            <Collapse in={!this.state.menuActive}>
+                                <IconButton
+                                    color="inherit"
+                                    aria-label="Abrir Menu"
+                                    onClick={this.onMenuAbrir}
+                                    className={classNames(classes.menuButton, this.state.menuActive && classes.hide)}
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+                            </Collapse>
+                            <Collapse in={this.state.menuActive}>
+                                <IconButton
+                                    color="inherit"
+                                    onClick={this.onMenuCerrar}
+                                    className={classNames(classes.menuButton, !this.state.menuActive && classes.hide)}
+                                >
+                                    {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                                </IconButton>
+                            </Collapse>
                             <Typography
                                 component={Link}
                                 to="/"
@@ -145,7 +170,12 @@ class BodyApp extends React.Component {
                             >
                                 Losas
                             </Typography>
-                            <IconUser />
+                            <IconButton
+                                color="inherit"
+                                onClick={this.onHelp}
+                            >
+                                <HelpIcon />
+                            </IconButton>
                         </Toolbar>
                     </AppBar>
                     <Drawer
@@ -154,6 +184,9 @@ class BodyApp extends React.Component {
                             paper: classNames(classes.drawerPaper, !this.state.menuActive && classes.drawerPaperClose),
                         }}
                         open={this.state.menuActive}
+                        ModalProps={{
+                            keepMounted: true,
+                        }}
                     >
                         <div className={classes.drawerInner}>
                             <div className={classes.drawerHeader}>
@@ -164,10 +197,6 @@ class BodyApp extends React.Component {
                             <Divider />
                             <List className={classes.list}>
                                 { funcionesItems(classes) }
-                            </List>
-                            <Divider />
-                            <List className={classes.list}>
-                                { opcionesItems(classes) }
                             </List>
                         </div>
                     </Drawer>
