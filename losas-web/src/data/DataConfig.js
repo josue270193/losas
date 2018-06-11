@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from "react-dom";
 import axios from 'axios';
 import MensajeError from "../component/MensajeError";
-import {URL_HEALTH, URL_INFO} from "./URLConfig";
+import {URL_HEALTH, URL_INFO} from "../util/URLUtil";
 
 export function requestInfo(){
     return new Promise((resolve, reject) => {
@@ -50,7 +50,12 @@ function procesarError(error) {
 
 export function mostrarMensajeError(mensaje) {
     ReactDOM.render(
-        <MensajeError open={true} mensaje={mensaje}/>, document.getElementById('mensaje_error')
+        <MensajeError
+            variant="error"
+            open={true}
+            mensaje={mensaje}
+        />,
+        document.getElementById('mensaje_error')
     );
 }
 

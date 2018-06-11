@@ -16,7 +16,7 @@ public class ApiDocConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("edu.uade.controller"))
+                .apis(RequestHandlerSelectors.basePackage("edu.uade.server"))
                 .paths(PathSelectors.any())
                 .build();
     }

@@ -1,7 +1,6 @@
 import React from 'react';
-import BodyApp from "./BodyApp";
-import {CssBaseline} from "@material-ui/core";
-import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
+import {createMuiTheme, CssBaseline, MuiThemeProvider} from "@material-ui/core";
+import {RouterRoot} from "../route/RouterApp";
 
 const theme = createMuiTheme({
 
@@ -12,7 +11,7 @@ class App extends React.Component {
         return (
             <MuiThemeProvider theme={theme}>
                 <CssBaseline  />
-                <BodyApp />
+                <RouterRoot />
             </MuiThemeProvider>
         );
     }
