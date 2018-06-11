@@ -53,11 +53,17 @@ class FragmentCarga extends React.Component {
 
     state = {
         data: {
-            relacionFecha: '',
-            evaluacionInicial: [],
-            fenomenoPatologico: [],
-            evaluacionNoDestructiva: [],
-            evaluacionDestructiva: [],
+            codigo: null,
+            evaluacionLosa: {
+                codigo: null,
+                relacionFecha: {
+                    valorInferencia: ''
+                },
+                valoresInicial: []
+            },
+            evaluacionesFenomenoPatologico: [],
+            evaluacionesNoDestructiva: [],
+            evaluacionesDestructiva: [],
         },
         activeStep: 0,
     };

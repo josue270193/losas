@@ -24,8 +24,12 @@ export const CAMPO_RELACION_FECHA_HELP = "Relacion entre Fecha Construccion y Fe
 export const CAMPO_EVALUACION_INICIAL = "Evaluacion Inicial";
 export const CAMPO_EVALUACION_INICIAL_HELP = "Observacion General";
 export const CAMPO_FENOMENOS_PATOLOGICO = "Fenomenos Patalogicos";
+export const CAMPO_FENOMENOS_PATOLOGICO_HELP = "Observacion Fenomenos";
+export const CAMPO_FENOMENOS_PATOLOGICO_UBICACION = "Ubicación";
 export const CAMPO_EVALUACION_NO_DESTRUCTIVA = "Evaluación no Destructiva";
 export const CAMPO_EVALUACION_DESTRUCTIVA = "Evaluación Destructiva";
+
+export const VALOR_UBICACION_POR_DEFECTO = "no";
 
 export const TITULO_HOME_DIAGNOSTICO = "Diagnostico";
 export const TITULO_HOME_HISTORIAL = "Historial";

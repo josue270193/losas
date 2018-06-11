@@ -36,11 +36,22 @@ class ConsultaPaso1 extends React.Component {
     }
 
     onChangeRelacionFecha = event => {
-        this.props.onChangeData('relacionFecha', event.target.value)
+        let data = this.props.data['evaluacionLosa'];
+        data['relacionFecha']['valorInferencia'] = event.target.value;
+        this.props.onChangeData('evaluacionLosa', data)
     };
 
     onChangeEvaluacionInicial = event => {
-        this.props.onChangeData('evaluacionInicial', event.target.value)
+        let data = this.props.data['evaluacionLosa'];
+        let dataItem = [];
+        event.target.value.map((item) => {
+            dataItem.push({
+                codigo: item
+            });
+            return item;
+        });
+        data['valoresInicial'] = dataItem;
+        this.props.onChangeData('evaluacionLosa', data)
     };
 
     render() {
@@ -57,7 +68,7 @@ class ConsultaPaso1 extends React.Component {
                                     {CAMPO_RELACION_FECHA}
                                 </InputLabel>
                                 <Select
-                                    value={data.relacionFecha}
+                                    value={data.evaluacionLosa.relacionFecha.valorInferencia}
                                     onChange={this.onChangeRelacionFecha}
                                     inputProps={{
                                         name: 'relacion-fecha',
@@ -91,7 +102,7 @@ class ConsultaPaso1 extends React.Component {
                                 </InputLabel>
                                 <Select
                                     multiple
-                                    value={data.evaluacionInicial}
+                                    value={data.evaluacionLosa.valoresInicial.map((i) => i.codigo)}
                                     onChange={this.onChangeEvaluacionInicial}
                                     input={<Input id="field-evaluacion-inicial" />}
                                     renderValue={selected => {
@@ -109,7 +120,7 @@ class ConsultaPaso1 extends React.Component {
                                         };
                                         return (
                                             <MenuItem key={index} value={item.codigo}>
-                                                <Checkbox checked={data.evaluacionInicial.includes(item.codigo)} />
+                                                <Checkbox checked={data.evaluacionLosa.valoresInicial.map((i) => i.codigo).includes(item.codigo)} />
                                                 <ListItemText primary={item.descripcion} />
                                             </MenuItem>
                                         );
