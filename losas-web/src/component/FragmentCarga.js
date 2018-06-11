@@ -10,6 +10,9 @@ import {
     MENSAJE_REINICIAR,
     MENSAJE_SIGUIENTE
 } from "../util/MensajesUtil";
+import ConsultaPaso1 from "./ConsultaPaso1";
+import ConsultaPaso2 from "./ConsultaPaso2";
+import ConsultaPaso3 from "./ConsultaPaso3";
 
 const styles = (theme) => ({
     root: {
@@ -32,57 +35,6 @@ const styles = (theme) => ({
     },
 });
 
-const stylePasos = (theme) => ({
-    root: {
-        padding: theme.spacing.unit * 2
-    }
-});
-class Paso1Componente extends React.Component {
-    render() {
-        const {classes} = this.props;
-        return (
-            <div className={classes.root}>
-                Paso 1
-            </div>
-        );
-    }
-}
-class Paso2Componente extends React.Component {
-    render() {
-        const {classes} = this.props;
-        return (
-            <div className={classes.root}>
-                Paso 2
-            </div>
-        );
-    }
-}
-class Paso3Componente extends React.Component {
-    render() {
-        const {classes} = this.props;
-        return (
-            <div className={classes.root}>
-                Paso 3
-            </div>
-        );
-    }
-}
-class PasoNuloComponente extends React.Component {
-    render() {
-        const {classes} = this.props;
-        return (
-            <div className={classes.root}>
-                Paso Nulo
-            </div>
-        );
-    }
-}
-
-const Paso1 = withStyles(stylePasos)(Paso1Componente);
-const Paso2 = withStyles(stylePasos)(Paso2Componente);
-const Paso3 = withStyles(stylePasos)(Paso3Componente);
-const PasoNulo = withStyles(stylePasos)(PasoNuloComponente);
-
 function getSteps() {
     return [
         MENSAJE_EVALUACION_LOSAS,
@@ -90,16 +42,23 @@ function getSteps() {
         MENSAJE_EVALUACION_DESTRUCTIVA
     ];
 }
-const stepsContent = {
-    0: Paso1,
-    1: Paso2,
-    2: Paso3
-};
 
+const stepsContent = {
+    0: ConsultaPaso1,
+    1: ConsultaPaso2,
+    2: ConsultaPaso3
+};
 
 class FragmentCarga extends React.Component {
 
     state = {
+        data: {
+            relacionFecha: '',
+            evaluacionInicial: [],
+            fenomenoPatologico: [],
+            evaluacionNoDestructiva: [],
+            evaluacionDestructiva: [],
+        },
         activeStep: 0,
     };
 
@@ -123,11 +82,20 @@ class FragmentCarga extends React.Component {
         });
     };
 
+    onChangeData = (property, value) => {
+        let newData = this.state.data;
+        newData[property] = value;
+
+        this.setState({
+            data: newData
+        });
+    };
+
     render(){
         const { classes } = this.props;
         const steps = getSteps();
-        const { activeStep } = this.state;
-        const SpecificStory = stepsContent[activeStep] || PasoNulo;
+        const { activeStep, data } = this.state;
+        const StepComponent = stepsContent[activeStep];
 
         return (
             <div className={classes.root}>
@@ -153,7 +121,7 @@ class FragmentCarga extends React.Component {
                         </div>
                     ) : (
                         <div>
-                            <SpecificStory />
+                            <StepComponent data={data} onChangeData={this.onChangeData} />
                             <Divider />
                             <div className={classes.footer}>
                                 <Button

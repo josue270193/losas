@@ -8,6 +8,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import WarningIcon from '@material-ui/icons/Warning';
 import green from '@material-ui/core/colors/green';
 import amber from '@material-ui/core/colors/amber';
+import classNames from 'classnames';
 
 const variantIcon = {
     success: CheckCircleIcon,
@@ -55,6 +56,7 @@ class MensajeError extends React.Component {
         };
     }
 
+    // eslint-disable-next-line
     componentWillReceiveProps(nextProps, nextContext){
         this.setState({ open: nextProps.open });
     }
@@ -64,7 +66,7 @@ class MensajeError extends React.Component {
     };
 
     render(){
-        const { mensaje, classes } = this.props;
+        const { classes, mensaje, variant } = this.props;
         const { open } = this.state;
         const Icon = variantIcon[variant];
         return (

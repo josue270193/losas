@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from "react-dom";
 import axios from 'axios';
 import MensajeError from "../component/MensajeError";
-import {URL_HEALTH, URL_INFO} from "../util/URLUtil";
+import {URL_CONFIGURACION_INICIAL, URL_HEALTH, URL_INFO} from "../util/URLUtil";
+
+const CONFIGURACION_KEY = 'configuracion';
 
 export function requestInfo(){
     return new Promise((resolve, reject) => {
@@ -29,6 +31,19 @@ export function requestHealth(){
                 reject(mensaje);
             })
         ;
+    });
+}
+
+async function requestObtenerConfiguracionInicial() {
+    return new Promise((resolve, reject) => {
+        axios.get(URL_CONFIGURACION_INICIAL)
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((error) => {
+                let mensaje = procesarError(error);
+                reject(mensaje);
+            })
     });
 }
 
@@ -59,6 +74,21 @@ export function mostrarMensajeError(mensaje) {
     );
 }
 
-export function activarCache(){
+function procesarJsonField(json) {
+    return JSON.stringify(json);
+}
 
+export function obtenerConfiguracionCache(){
+    return JSON.parse(localStorage.getItem(CONFIGURACION_KEY)) || [];
+}
+
+export function activarCache(){
+    requestObtenerConfiguracionInicial()
+        .then((response) => {
+            localStorage.setItem(CONFIGURACION_KEY, procesarJsonField(response));
+        })
+        .catch((error) => {
+            mostrarMensajeError(error);
+        })
+    ;
 }
