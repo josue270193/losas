@@ -1,8 +1,9 @@
 package edu.uade.server.negocio.impl;
 
-import edu.uade.server.entity.ConsultaEntity;
+import edu.uade.server.dto.ConsultaDto;
 import edu.uade.server.negocio.ConsultaNegocio;
 import net.sf.clipsrules.jni.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -10,16 +11,13 @@ import java.lang.reflect.Field;
 @Service
 public class ConsultaNegocioImpl implements ConsultaNegocio {
 
-    private final String PATH_TO_CLP = "/tp3_ej.clp";
+    @Value("${path.clips}")
+    private String pathClip;
 
     private Environment clips;
 
-    public ConsultaNegocioImpl() {
-        init();
-    }
-
-    private void init() {
-        System.setProperty("java.library.path", "/Users/Juan/git/losas/libs");
+    public ConsultaNegocioImpl(@Value("${path.lib}") String pathLib) {
+        System.setProperty("java.library.path", pathLib);
         Field fieldSysPath;
         try {
             fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
@@ -28,19 +26,22 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
             e.printStackTrace();
         }
-
-        this.clips = new Environment();
-        this.clips.loadFromResource(PATH_TO_CLP);
-        this.clips.run();
     }
 
-    public ConsultaEntity getConsultaByCodigo(Long codigo) {
+    @Override
+    public ConsultaDto getConsultaByCodigo(Long codigo) {
+        try {
+            clips = new Environment();
+            clips.loadFromResource(pathClip);
+            clips.run();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         return null;
     }
 
-    public ConsultaEntity consultar(ConsultaEntity consulta) {
+    @Override
+    public ConsultaDto consultar(ConsultaDto consulta) {
         return null;
     }
-
-
 }
