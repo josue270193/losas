@@ -1,7 +1,7 @@
 export const URL_BASE = (process.env.NODE_ENV === 'production') ?
                         "/losas-server"
                         :
-                        "http://192.168.0.10:8080/losas-server";
+                        "http://localhost:8080/losas-server";
 
 export const URL_DOCUMENTACION                  = URL_BASE + "/swagger-ui.html";
 export const URL_H2_DB                          = URL_BASE + "/h2-console";

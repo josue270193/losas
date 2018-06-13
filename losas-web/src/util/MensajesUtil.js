@@ -27,7 +27,10 @@ export const CAMPO_FENOMENOS_PATOLOGICO = "Fenomenos Patalogicos";
 export const CAMPO_FENOMENOS_PATOLOGICO_HELP = "Observacion Fenomenos";
 export const CAMPO_FENOMENOS_PATOLOGICO_UBICACION = "Ubicación";
 export const CAMPO_EVALUACION_NO_DESTRUCTIVA = "Evaluación no Destructiva";
+export const CAMPO_EVALUACION_NO_DESTRUCTIVA_COLOR = "Color";
+export const CAMPO_EVALUACION_NO_DESTRUCTIVA_HELP = "Observaciones con instrumentos no destructivos a la losa";
 export const CAMPO_EVALUACION_DESTRUCTIVA = "Evaluación Destructiva";
+export const CAMPO_EVALUACION_DESTRUCTIVA_HELP = "Resultados de los examenes de laboratorio";
 
 export const VALOR_UBICACION_POR_DEFECTO = "no";
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Checkbox, FormControl, FormHelperText, Grid, Input, InputLabel, ListItemText, MenuItem, Select, withStyles} from "@material-ui/core";
+import {Checkbox, Chip, FormControl, FormHelperText, Grid, Input, InputLabel, ListItemText, MenuItem, Select, withStyles} from "@material-ui/core";
 import {
     CAMPO_EVALUACION_INICIAL,
     CAMPO_EVALUACION_INICIAL_HELP,
@@ -20,6 +20,11 @@ const style = (theme) => ({
     formControl: {
         margin: theme.spacing.unit,
         width: '100%',
+    },
+    rootChip: {
+        flex: 1,
+        margin: theme.spacing.unit / 2,
+        width: 'auto'
     },
 });
 
@@ -95,6 +100,7 @@ class ConsultaPaso1 extends React.Component {
                                 </FormHelperText>
                             </FormControl>
                         </Grid>
+
                         <Grid item xs={12} sm={6}>
                             <FormControl className={classes.formControl}>
                                 <InputLabel htmlFor="field-evaluacion-inicial">
@@ -130,6 +136,25 @@ class ConsultaPaso1 extends React.Component {
                                     {CAMPO_EVALUACION_INICIAL_HELP}
                                 </FormHelperText>
                             </FormControl>
+                        </Grid>
+
+                        <Grid item xs={12} sm={6}>
+                        </Grid>
+
+                        <Grid item xs={12} sm={6}>
+                            {data.evaluacionLosa.valoresInicial.map((value, index) => {
+                                const item = opcionesEvaluacionInicial.find((i) => i.codigo === value.codigo) || null;
+                                return (
+                                    item &&
+                                    <div key={index} className={classes.rootChip}>
+                                        <Chip
+                                            key={item.codigo}
+                                            label={item.descripcion}
+                                            className={classes.chipFenomeno}
+                                        />
+                                    </div>
+                                );
+                            })}
                         </Grid>
                     </Grid>
                 </form>
