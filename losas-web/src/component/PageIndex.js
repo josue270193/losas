@@ -4,6 +4,7 @@ import classNames from "classnames";
 import {Link} from "react-router-dom";
 import {AppBar, Button, Toolbar, Typography, withStyles} from "@material-ui/core";
 import {MENSAJE_INICIO, TITULO_APLICATIVO} from "../util/MensajesUtil";
+import {ROUTE_HOME_DIAGNOSTICO} from "../util/URLUtil";
 
 const styles = (theme) => ({
     root: {
@@ -58,10 +59,11 @@ class PageIndex extends React.Component {
 
     render(){
         const { classes } = this.props;
+        const LinkCustom = props => <Link to={ROUTE_HOME_DIAGNOSTICO} {...props} />;
 
-        const LinkCustom = props => <Link to="/home" {...props} />
         return (
             <div className={classes.root}>
+                <div id="mensaje_error"/>
                 <div className={classes.appFrame}>
                     <AppBar
                         position="absolute"

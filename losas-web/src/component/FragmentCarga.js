@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button, CircularProgress, Divider, Paper, Step, StepLabel, Stepper, withStyles} from "@material-ui/core";
+import {Button, CircularProgress, Divider, Hidden, Paper, Step, StepLabel, Stepper, Typography, withStyles} from "@material-ui/core";
 import {
     MENSAJE_ANTERIOR,
     MENSAJE_EVALUACION_DESTRUCTIVA,
@@ -16,10 +16,14 @@ import ConsultaPaso3 from "./ConsultaPaso3";
 
 const styles = (theme) => ({
     root: {
-        width: '90%',
+
+    },
+    paperTitulo: {
+        padding: `${theme.spacing.unit * 2}px 0`
     },
     footer: {
         padding: theme.spacing.unit * 2,
+        textAlign: 'center',
     },
     button: {
         marginRight: theme.spacing.unit,
@@ -29,6 +33,10 @@ const styles = (theme) => ({
     },
     completed: {
         display: 'inline-block',
+    },
+    progressDiv: {
+        width: '100%',
+        textAlign: 'center',
     },
     progress: {
         margin: theme.spacing.unit * 2,
@@ -69,9 +77,15 @@ class FragmentCarga extends React.Component {
     };
 
     handleNext = () => {
-        const { activeStep } = this.state;
+        const { activeStep, data } = this.state;
+        const steps = getSteps();
+
         this.setState({
             activeStep: activeStep + 1,
+        }, () => {
+            if (this.state.activeStep === steps.length) {
+                console.log(data);
+            }
         });
     };
 
@@ -105,6 +119,11 @@ class FragmentCarga extends React.Component {
 
         return (
             <div className={classes.root}>
+                <Paper elevation={0} className={classes.paperTitulo}>
+                    <Typography variant="display1">
+                        Diagnostico
+                    </Typography>
+                </Paper>
                 <Stepper activeStep={activeStep} alternativeLabel>
                     {steps.map( (label) => {
                         return (
@@ -117,7 +136,11 @@ class FragmentCarga extends React.Component {
                 <Paper>
                     {this.state.activeStep === steps.length ? (
                         <div>
-                            <CircularProgress className={classes.progress} />
+                            <div className={classes.progressDiv}>
+
+
+                                <CircularProgress className={classes.progress} size={50}/>
+                            </div>
                             <Divider />
                             <div className={classes.footer}>
                                 <Button onClick={this.handleReset}>
@@ -127,6 +150,24 @@ class FragmentCarga extends React.Component {
                         </div>
                     ) : (
                         <div>
+                            <Hidden only={['sm', 'lg']}>
+                                <div className={classes.footer}>
+                                    <Button
+                                        disabled={activeStep === 0}
+                                        onClick={this.handleBack}
+                                        variant="outlined"
+                                        className={classes.backButton}
+                                    >
+                                        {MENSAJE_ANTERIOR}
+                                    </Button>
+                                    <Button variant="outlined" color="primary" onClick={this.handleNext}>
+                                        {activeStep === steps.length - 1 ?
+                                            MENSAJE_FINALIZAR : MENSAJE_SIGUIENTE
+                                        }
+                                    </Button>
+                                </div>
+                                <Divider />
+                            </Hidden>
                             <StepComponent data={data} onChangeData={this.onChangeData} />
                             <Divider />
                             <div className={classes.footer}>

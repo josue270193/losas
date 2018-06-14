@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Checkbox, Chip, FormControl, FormHelperText, Grid, Input, InputLabel, ListItemText, MenuItem, Select, withStyles} from "@material-ui/core";
+import {Checkbox, Chip, FormControl, FormHelperText, Grid, Hidden, Input, InputLabel, ListItemText, MenuItem, Select, withStyles} from "@material-ui/core";
 import {
     CAMPO_EVALUACION_INICIAL,
     CAMPO_EVALUACION_INICIAL_HELP,
@@ -22,10 +22,17 @@ const style = (theme) => ({
         width: '100%',
     },
     rootChip: {
-        flex: 1,
-        margin: theme.spacing.unit / 2,
-        width: 'auto'
+        display: 'flex',
+        padding: theme.spacing.unit,
+        alignItems: 'center',
     },
+    chip: {
+        flex: 1,
+        whiteSpace: 'pre-wrap',
+    },
+    formChip: {
+        flex: 1,
+    }
 });
 
 class ConsultaPaso1 extends React.Component {
@@ -57,6 +64,10 @@ class ConsultaPaso1 extends React.Component {
         });
         data['valoresInicial'] = dataItem;
         this.props.onChangeData('evaluacionLosa', data)
+    };
+
+    onEliminarChip = event => {
+        console.log(event);
     };
 
     render() {
@@ -138,8 +149,10 @@ class ConsultaPaso1 extends React.Component {
                             </FormControl>
                         </Grid>
 
-                        <Grid item xs={12} sm={6}>
-                        </Grid>
+                        <Hidden only="xs">
+                            <Grid item xs={12} sm={6}>
+                            </Grid>
+                        </Hidden>
 
                         <Grid item xs={12} sm={6}>
                             {data.evaluacionLosa.valoresInicial.map((value, index) => {
@@ -150,7 +163,8 @@ class ConsultaPaso1 extends React.Component {
                                         <Chip
                                             key={item.codigo}
                                             label={item.descripcion}
-                                            className={classes.chipFenomeno}
+                                            className={classes.chip}
+                                            onDelete={this.onEliminarChip}
                                         />
                                     </div>
                                 );

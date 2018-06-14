@@ -114,7 +114,7 @@ class PageHome extends React.Component {
     constructor(prop){
         super(prop);
         this.state = {
-            menuActive: window.innerWidth > 760
+            menuActive: false
         };
     }
 

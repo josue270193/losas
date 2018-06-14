@@ -14,10 +14,17 @@ const style = (theme) => ({
         width: '100%',
     },
     rootChip: {
-        flex: 1,
-        margin: theme.spacing.unit / 2,
-        width: 'auto'
+        display: 'flex',
+        padding: theme.spacing.unit,
+        alignItems: 'center',
     },
+    chip: {
+        flex: 1,
+        whiteSpace: 'pre-wrap',
+    },
+    formChip: {
+        flex: 1,
+    }
 });
 
 class ConsultaPaso3 extends React.Component {
@@ -109,7 +116,7 @@ class ConsultaPaso3 extends React.Component {
                                         <Chip
                                             key={item.codigo}
                                             label={item.descripcion}
-                                            className={classes.chipFenomeno}
+                                            className={classes.chip}
                                         />
                                     </div>
                                 );

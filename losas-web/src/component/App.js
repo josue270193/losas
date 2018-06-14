@@ -3,7 +3,16 @@ import {createMuiTheme, CssBaseline, MuiThemeProvider} from "@material-ui/core";
 import {RouterRoot} from "../route/RouterApp";
 
 const theme = createMuiTheme({
-
+    overrides: {
+        MuiChip: {
+            label: {
+                whiteSpace: 'pre-wrap',
+                width: '100%',
+                justifyContent: 'center',
+                userSelect: 'text',
+            },
+        },
+    },
 });
 
 class App extends React.Component {

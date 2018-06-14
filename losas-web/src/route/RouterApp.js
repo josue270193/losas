@@ -6,6 +6,7 @@ import FragmentHome from "../component/FragmentHome";
 import {ROUTE_HOME, ROUTE_HOME_DIAGNOSTICO, ROUTE_HOME_HISTORIAL, ROUTE_ROOT} from "../util/URLUtil";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import FragmentCarga from "../component/FragmentCarga";
+import FragmentHistorial from "../component/FragmentHistorial";
 
 export const RouterRoot = () => (
     <Route render={({ location }) =>
@@ -26,7 +27,7 @@ export const RouterApp = () => {
         <Switch>
             <Route exact path={ROUTE_HOME} component={ FragmentHome }/>
             <Route path={ROUTE_HOME_DIAGNOSTICO} component={ FragmentCarga }/>
-            <Route path={ROUTE_HOME_HISTORIAL} component={ FragmentHome }/>
+            <Route path={ROUTE_HOME_HISTORIAL} component={ FragmentHistorial }/>
             <Route component={FragmentHome}/>
         </Switch>
     );

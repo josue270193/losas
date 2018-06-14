@@ -1,5 +1,6 @@
 package edu.uade.server.dto;
 
+import edu.uade.server.entity.EvaluacionDestructivaEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,4 +14,9 @@ public class EvaluacionDestructivaDto {
     private ValorEvaluacionDestructivaDto valor;
     private Boolean cumpleNorma;
 
+    public EvaluacionDestructivaDto(EvaluacionDestructivaEntity entity) {
+        if (entity != null){
+
+        }
+    }
 }

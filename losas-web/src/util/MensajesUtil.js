@@ -36,3 +36,4 @@ export const VALOR_UBICACION_POR_DEFECTO = "no";
 
 export const TITULO_HOME_DIAGNOSTICO = "Diagnostico";
 export const TITULO_HOME_HISTORIAL = "Historial";
+export const TITULO_LISTA_HISTORIAL = "Consultas Realizadas";
