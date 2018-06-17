@@ -52,6 +52,10 @@ const styles = (theme) => ({
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, 50%)'
+    },
+    centradoTexto: {
+        width: '100%',
+        textAlign: 'center',
     }
 });
 
@@ -70,12 +74,13 @@ class PageIndex extends React.Component {
                         className={classes.appBar}
                     >
                         <Toolbar>
-                            <Typography variant="title" color="inherit" className={classes.flex}>
-                                {TITULO_APLICATIVO}
-                            </Typography>
+
                         </Toolbar>
                     </AppBar>
                     <div className={classes.content}>
+                        <Typography variant="display4" className={classes.centradoTexto}>
+                            {TITULO_APLICATIVO}
+                        </Typography>
                         <Button component={LinkCustom} variant="outlined" className={classNames(classes.button, classes.centrado)}>
                             {MENSAJE_INICIO}
                         </Button>

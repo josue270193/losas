@@ -9,31 +9,31 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "PARAMETROS_CONSULTA")
+@Table(name = "EVALUACION_FENOMENO_PATOLOGICO")
 @AllArgsConstructor
 @NoArgsConstructor
 public class EvaluacionFenomenoPatologicoEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "CODIGO", nullable = false)
+    @Column(name = "codigo", nullable = false)
     @Getter
     @Setter
     private Long codigo;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "VALOR", nullable = false)
+    @JoinColumn(name = "valor", nullable = false)
     @Getter
     @Setter
     private ValorFenomenoPatologicoEntity valor;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "UBICACION", nullable = false)
+    @Column(name = "ubicacion", nullable = false)
     @Getter
     @Setter
     private UbicacionFenomenoEnum ubicacion;
 
-    @Column(name = "CUMPLE_NORMA", nullable = false)
+    @Column(name = "cumple_norma", nullable = false)
     @Getter
     @Setter
     private Boolean cumpleNorma;

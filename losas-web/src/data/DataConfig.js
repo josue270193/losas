@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from "react-dom";
 import axios from 'axios';
 import MensajeError from "../component/MensajeError";
-import {URL_CONFIGURACION_INICIAL, URL_HEALTH, URL_INFO} from "../util/URLUtil";
+import {URL_CONFIGURACION_INICIAL, URL_CONSULTA_CONSULTAR, URL_HEALTH, URL_INFO} from "../util/URLUtil";
 
 const CONFIGURACION_KEY = 'configuracion';
 
@@ -34,6 +34,27 @@ export function requestHealth(){
     });
 }
 
+function transformarRequestConsulta(parametro) {
+    return {
+        parametro: parametro,
+        fechaCreacion: new Date()
+    };
+}
+
+export function requestDoConsulta(consulta){
+    return new Promise((resolve, reject) => {
+        axios.post(URL_CONSULTA_CONSULTAR, transformarRequestConsulta(consulta))
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((error) => {
+                let mensaje = procesarError(error);
+                reject(mensaje);
+            })
+        ;
+    });
+}
+
 async function requestObtenerConfiguracionInicial() {
     return new Promise((resolve, reject) => {
         axios.get(URL_CONFIGURACION_INICIAL)
@@ -53,7 +74,7 @@ function procesarError(error) {
         if (typeof error.response.data === "string"){
             mensaje = error.response.data;
         } else if (typeof error.response.data === "object"){
-            mensaje = error.response.data.mensaje;
+            mensaje = error.response.data.message;
         }
     } else if (error.request) {
         mensaje = error.message;

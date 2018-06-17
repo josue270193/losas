@@ -28,9 +28,6 @@ const style = (theme) => ({
         display: 'flex',
         margin: theme.spacing.unit,
         alignItems: 'center',
-
-        background: '#F5F5F5',
-        borderRadius: '10px',
     },
     chip: {
         flex: 1,
@@ -132,7 +129,7 @@ class ConsultaPaso2 extends React.Component {
             <form autoComplete="off" className={classes.root}>
                 <Grid container spacing={24}>
                     <Grid item xs={12} sm={6}>
-                        <Grid container spacing={24}>
+                        <Grid container spacing={0}>
                             <Grid item xs={12}>
                                 <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="field-fenomeno-patologico">
@@ -219,7 +216,7 @@ class ConsultaPaso2 extends React.Component {
                         </Grid>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <Grid container spacing={24}>
+                        <Grid container spacing={0}>
                             <Grid item xs={12}>
                                 <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="field-evaluacion-no-destructiva">

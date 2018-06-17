@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,32 +17,32 @@ public class ConsultaParametroEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "CODIGO", nullable = false)
+    @Column(name = "codigo", nullable = false)
     @Getter
     @Setter
     private Long codigo;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "EVALUACION_LOSA", nullable = false)
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "evaluacion_losa_id", nullable = false)
     @Getter
     @Setter
     private EvaluacionLosaEntity evaluacionLosa;
 
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "EVALUACION_FENOMENO_PATOLOGICO", nullable = false)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "evaluacion_fenomeno_patologico_id", nullable = false)
     @Getter
     @Setter
-    private List<EvaluacionFenomenoPatologicoEntity> evaluacionFenomenoPatologico;
+    private List<EvaluacionFenomenoPatologicoEntity> evaluacionFenomenoPatologico = new ArrayList<>();
 
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "EVALUACION_NO_DESTRUCTIVA", nullable = false)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "evaluacion_no_destructiva_id", nullable = false)
     @Getter
     @Setter
-    private List<EvaluacionNoDestructivaEntity> evaluacionNoDestructiva;
+    private List<EvaluacionNoDestructivaEntity> evaluacionNoDestructiva = new ArrayList<>();
 
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "EVALUACION_DESTRUCTIVA", nullable = false)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "evaluacion_destructiva_id", nullable = false)
     @Getter
     @Setter
-    private List<EvaluacionDestructivaEntity> evaluacionDestructiva;
+    private List<EvaluacionDestructivaEntity> evaluacionDestructiva = new ArrayList<>();
 }

@@ -18,6 +18,7 @@ export const MENSAJE_REINICIAR = "Reiniciar";
 export const MENSAJE_SELECCION = "Seleccione una opcion";
 export const MENSAJE_SELECCIONES = "Seleccione";
 export const MENSAJE_CANTIDAD_SELECCIONADO = (cantidad) => {return cantidad > 1 ? cantidad + ' Seleccionados' : cantidad + ' Seleccionado'};
+export const MENSAJE_ALERTA_CANCELACION = "¿Desea cancelar la operacion?";
 
 export const CAMPO_RELACION_FECHA = "Relacion Fecha";
 export const CAMPO_RELACION_FECHA_HELP = "Relacion entre Fecha Construccion y Fecha aparicion Fenomenos";

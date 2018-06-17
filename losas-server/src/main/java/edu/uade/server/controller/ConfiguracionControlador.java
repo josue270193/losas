@@ -8,15 +8,13 @@ import edu.uade.server.negocio.ConfiguracionNegocio;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 
-@Controller
+@RestController
 @RequestMapping("/api/configuracion")
 public class ConfiguracionControlador {
 
@@ -29,13 +27,7 @@ public class ConfiguracionControlador {
         this.configuracionNegocio = configuracionNegocio;
     }
 
-    @RequestMapping(
-            value = "/get-all",
-            method = RequestMethod.GET,
-            produces = {MediaType.APPLICATION_JSON_VALUE},
-            consumes = {MediaType.ALL_VALUE}
-    )
-    @ResponseBody
+    @GetMapping(value = "/get-all")
     public ConfiguracionDto obtenerConfiguracionInicial(){
         ConfiguracionDto resultado = new ConfiguracionDto();
         resultado.setValoresColorEvaluacion(Arrays.asList(ColorEvaluacionEnum.values()));

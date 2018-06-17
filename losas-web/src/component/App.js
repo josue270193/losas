@@ -10,6 +10,7 @@ const theme = createMuiTheme({
                 width: '100%',
                 justifyContent: 'center',
                 userSelect: 'text',
+                textAlign: 'center',
             },
         },
     },

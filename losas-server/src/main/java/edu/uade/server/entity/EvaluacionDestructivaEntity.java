@@ -15,18 +15,18 @@ public class EvaluacionDestructivaEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "CODIGO", nullable = false)
+    @Column(name = "codigo", nullable = false)
     @Getter
     @Setter
     private Long codigo;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "VALOR", nullable = false)
+    @JoinColumn(name = "valor", nullable = false)
     @Getter
     @Setter
     private ValorEvaluacionDestructivaEntity valor;
 
-    @Column(name = "CUMPLE_NORMA", nullable = false)
+    @Column(name = "cumple_norma", nullable = false)
     @Getter
     @Setter
     private Boolean cumpleNorma;

@@ -18,7 +18,10 @@ public class EvaluacionNoDestructivaDto {
 
     public EvaluacionNoDestructivaDto(EvaluacionNoDestructivaEntity entity) {
         if (entity != null){
-
+            setCodigo(entity.getCodigo());
+            setValor(new ValorEvaluacionNoDestructivaDto(entity.getValor()));
+            setCumpleNorma(entity.getCumpleNorma());
+            setColorEvaluacion(entity.getColorEvaluacion());
         }
     }
 }

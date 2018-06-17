@@ -9,6 +9,8 @@ export const URL_INFO                           = URL_BASE + "/info";
 export const URL_HEALTH                         = URL_BASE + "/health";
 export const URL_CONFIGURACION                  = URL_BASE + "/api/configuracion";
 export const URL_CONSULTA                       = URL_BASE + "/api/consulta";
+export const URL_CONSULTA_CONSULTAR             = URL_CONSULTA + "/consultar";
+export const URL_CONSULTA_LISTAR                = URL_CONSULTA + "/get-all";
 export const URL_CONFIGURACION_INICIAL          = URL_CONFIGURACION + "/get-all";
 
 export const ROUTE_ROOT                         = "/";

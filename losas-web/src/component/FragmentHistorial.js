@@ -7,9 +7,11 @@ import {TITULO_LISTA_HISTORIAL} from "../util/MensajesUtil";
 
 const styles = (theme) => ({
     root: {
-
+        maxWidth: '900px',
+        margin: '0 auto'
     },
     paperTitulo: {
+        textAlign: 'center',
         padding: `${theme.spacing.unit * 2}px 0`
     },
     panelItem: {

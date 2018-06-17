@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Button, CircularProgress, Divider, Hidden, Paper, Step, StepLabel, Stepper, Typography, withStyles} from "@material-ui/core";
 import {
+    MENSAJE_ALERTA_CANCELACION,
     MENSAJE_ANTERIOR,
     MENSAJE_EVALUACION_DESTRUCTIVA,
     MENSAJE_EVALUACION_LOSAS,
@@ -13,12 +14,16 @@ import {
 import ConsultaPaso1 from "./ConsultaPaso1";
 import ConsultaPaso2 from "./ConsultaPaso2";
 import ConsultaPaso3 from "./ConsultaPaso3";
+import {Prompt} from "react-router-dom";
+import {mostrarMensajeError, requestDoConsulta} from "../data/DataConfig";
 
 const styles = (theme) => ({
     root: {
-
+        maxWidth: '900px',
+        margin: '0 auto'
     },
     paperTitulo: {
+        textAlign: 'center',
         padding: `${theme.spacing.unit * 2}px 0`
     },
     footer: {
@@ -43,37 +48,41 @@ const styles = (theme) => ({
     },
 });
 
-function getSteps() {
+const getSteps = () => {
     return [
         MENSAJE_EVALUACION_LOSAS,
         MENSAJE_EVALUACION_NO_DESTRUCTIVA,
         MENSAJE_EVALUACION_DESTRUCTIVA
     ];
-}
-
+};
 const stepsContent = {
     0: ConsultaPaso1,
     1: ConsultaPaso2,
     2: ConsultaPaso3
 };
 
+const crearNuevaConsulta = () => {
+    return {
+        codigo: null,
+        evaluacionLosa: {
+            codigo: null,
+            relacionFecha: {
+                valorInferencia: ''
+            },
+            valoresInicial: []
+        },
+        evaluacionesFenomenoPatologico: [],
+        evaluacionesNoDestructiva: [],
+        evaluacionesDestructiva: [],
+    };
+};
+
 class FragmentCarga extends React.Component {
 
     state = {
-        data: {
-            codigo: null,
-            evaluacionLosa: {
-                codigo: null,
-                relacionFecha: {
-                    valorInferencia: ''
-                },
-                valoresInicial: []
-            },
-            evaluacionesFenomenoPatologico: [],
-            evaluacionesNoDestructiva: [],
-            evaluacionesDestructiva: [],
-        },
+        data: crearNuevaConsulta(),
         activeStep: 0,
+        loading: false,
     };
 
     handleNext = () => {
@@ -82,9 +91,22 @@ class FragmentCarga extends React.Component {
 
         this.setState({
             activeStep: activeStep + 1,
+            loading: ((activeStep + 1) === steps.length)
         }, () => {
             if (this.state.activeStep === steps.length) {
-                console.log(data);
+                requestDoConsulta(data)
+                    .then((resultado) => {
+                        console.log(resultado);
+                    })
+                    .catch((error) => {
+                        mostrarMensajeError(error);
+                    })
+                    .finally(() => {
+                        this.setState({
+                            loading: false
+                        });
+                    })
+                ;
             }
         });
     };
@@ -114,7 +136,7 @@ class FragmentCarga extends React.Component {
     render(){
         const { classes } = this.props;
         const steps = getSteps();
-        const { activeStep, data } = this.state;
+        const { activeStep, data, loading } = this.state;
         const StepComponent = stepsContent[activeStep];
 
         return (
@@ -134,16 +156,18 @@ class FragmentCarga extends React.Component {
                     })}
                 </Stepper>
                 <Paper>
+                    <Prompt
+                        when={loading}
+                        message={() => MENSAJE_ALERTA_CANCELACION}
+                    />
                     {this.state.activeStep === steps.length ? (
                         <div>
                             <div className={classes.progressDiv}>
-
-
                                 <CircularProgress className={classes.progress} size={50}/>
                             </div>
                             <Divider />
                             <div className={classes.footer}>
-                                <Button onClick={this.handleReset}>
+                                <Button onClick={this.handleReset} disabled={loading}>
                                     {MENSAJE_REINICIAR}
                                 </Button>
                             </div>

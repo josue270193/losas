@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "CONSULTAS")
@@ -15,21 +16,26 @@ public class ConsultaEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "CODIGO", nullable = false)
+    @Column(name = "codigo", nullable = false)
     @Getter
     @Setter
     private Long codigo;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "PARAMETRO", nullable = false)
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "parametro_id", nullable = false)
     @Getter
     @Setter
     private ConsultaParametroEntity parametro;
 
-    @OneToOne
-    @JoinColumn(name = "DIAGNOSTICO")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "diagnostico_id")
     @Getter
     @Setter
     private DiagnosticoEntity diagnostico;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "fecha_creacion", nullable = false)
+    @Getter
+    @Setter
+    private Date fechaCreacion;
 }

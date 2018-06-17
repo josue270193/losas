@@ -18,7 +18,10 @@ public class EvaluacionFenomenoPatologicoDto {
 
     public EvaluacionFenomenoPatologicoDto(EvaluacionFenomenoPatologicoEntity entity) {
         if (entity != null){
-
+            setCodigo(entity.getCodigo());
+            setValor(new ValorFenomenoPatologicoDto(entity.getValor()));
+            setUbicacion(entity.getUbicacion());
+            setCumpleNorma(entity.getCumpleNorma());
         }
     }
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,13 +18,13 @@ public class EvaluacionLosaEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "CODIGO", nullable = false)
+    @Column(name = "codigo", nullable = false)
     @Getter
     @Setter
     private Long codigo;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "RELACION_FECHA", nullable = false)
+    @Column(name = "relacion_fecha", nullable = false)
     @Getter
     @Setter
     private RelacionFechaEnum relacionFecha;
@@ -32,5 +33,5 @@ public class EvaluacionLosaEntity {
     @JoinTable(name = "EVALUACIONES_LOSA_VALORES_INICIAL")
     @Getter
     @Setter
-    private List<ValorInicialEntity> valoresInicial;
+    private List<ValorInicialEntity> valoresInicial = new ArrayList<>();
 }

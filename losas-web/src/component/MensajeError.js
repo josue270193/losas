@@ -69,13 +69,15 @@ class MensajeError extends React.Component {
         const { classes, mensaje, variant } = this.props;
         const { open } = this.state;
         const Icon = variantIcon[variant];
+
         return (
             <Snackbar
                 anchorOrigin={{ vertical: 'top', horizontal: 'center'}}
                 open={open}
                 onClose={this.onCerrarMensaje}
-                SnackbarContentProps={{
+                ContentProps={{
                     'aria-describedby': 'message-id',
+                    className: classes[variant],
                 }}
                 message={
                     <Typography

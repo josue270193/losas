@@ -16,7 +16,9 @@ public class EvaluacionDestructivaDto {
 
     public EvaluacionDestructivaDto(EvaluacionDestructivaEntity entity) {
         if (entity != null){
-
+            setCodigo(entity.getCodigo());
+            setValor(new ValorEvaluacionDestructivaDto(entity.getValor()));
+            setCumpleNorma(entity.getCumpleNorma());
         }
     }
 }

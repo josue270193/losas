@@ -16,24 +16,24 @@ public class EvaluacionNoDestructivaEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "CODIGO", nullable = false)
+    @Column(name = "codigo", nullable = false)
     @Getter
     @Setter
     private Long codigo;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "VALOR", nullable = false)
+    @JoinColumn(name = "valor", nullable = false)
     @Getter
     @Setter
     private ValorEvaluacionNoDestructivaEntity valor;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "COLOR_EVALUACION", nullable = false)
+    @Column(name = "color_evaluacion", nullable = false)
     @Getter
     @Setter
     private ColorEvaluacionEnum colorEvaluacion;
 
-    @Column(name = "CUMPLE_NORMA", nullable = false)
+    @Column(name = "cumple_norma", nullable = false)
     @Getter
     @Setter
     private Boolean cumpleNorma;

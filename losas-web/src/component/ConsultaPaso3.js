@@ -67,7 +67,7 @@ class ConsultaPaso3 extends React.Component {
             <div className={classes.root}>
                 <form autoComplete="off">
                     <Grid container spacing={24}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12}>
                             <FormControl className={classes.formControl}>
                                 <InputLabel htmlFor="field-evaluacion-destructiva">
                                     {CAMPO_EVALUACION_DESTRUCTIVA}
@@ -104,23 +104,24 @@ class ConsultaPaso3 extends React.Component {
                             </FormControl>
                         </Grid>
 
-                        <Grid item xs={12} sm={6}>
-                        </Grid>
-
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12}>
+                            <Grid container spacing={0}>
                             {data.evaluacionesDestructiva.map((value, index) => {
                                 const item = opcionesDestructiva.find((i) => i.codigo === value.valor.codigo) || null;
                                 return (
                                     item &&
-                                    <div key={index} className={classes.rootChip}>
-                                        <Chip
-                                            key={item.codigo}
-                                            label={item.descripcion}
-                                            className={classes.chip}
-                                        />
-                                    </div>
+                                    <Grid item xs={12} sm={6} key={index}>
+                                        <div className={classes.rootChip}>
+                                            <Chip
+                                                key={item.codigo}
+                                                label={item.descripcion}
+                                                className={classes.chip}
+                                            />
+                                        </div>
+                                    </Grid>
                                 );
                             })}
+                            </Grid>
                         </Grid>
                     </Grid>
                 </form>

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,6 +15,7 @@ public class ConsultaDto {
     private Long codigo;
     private ConsultaParametroDto parametro;
     private DiagnosticoDto diagnostico;
+    private Date fechaCreacion;
 
     public ConsultaDto(ConsultaEntity entity) {
         if (entity != null){
@@ -21,6 +24,7 @@ public class ConsultaDto {
             if (entity.getDiagnostico() != null){
                 setDiagnostico(new DiagnosticoDto(entity.getDiagnostico()));
             }
+            setFechaCreacion(entity.getFechaCreacion());
         }
     }
 }

@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "VALORES_INICIAL")
@@ -17,23 +15,18 @@ public class ValorInicialEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "CODIGO", nullable = false)
+    @Column(name = "codigo", nullable = false)
     @Getter
     @Setter
     private Long codigo;
 
-    @Column(name = "DESCRIPCION", nullable = false)
+    @Column(name = "descripcion", nullable = false)
     @Getter
     @Setter
     private String descripcion;
 
-    @Column(name = "VALOR_INFERENCIA", nullable = false)
+    @Column(name = "valor_inferencia", nullable = false)
     @Getter
     @Setter
     private String valorInferencia;
-
-    @ManyToMany(mappedBy = "valoresInicial")
-    @Getter
-    @Setter
-    private List<EvaluacionLosaEntity> evaluacionesLosa = new ArrayList<>();
 }
