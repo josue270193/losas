@@ -41,4 +41,14 @@ public class ConsultaParametroDto {
             );
         }
     }
+
+    public String toClips() {
+        StringBuilder b = new StringBuilder();
+        if(evaluacionLosa != null) {
+            b.append(this.evaluacionLosa.toClips());
+            b.append("\r\n");
+        }
+
+        return b.toString();
+    }
 }

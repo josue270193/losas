@@ -30,4 +30,16 @@ public class EvaluacionLosaDto {
             );
         }
     }
+
+    public String toClips() {
+        String losaTemplate = "(losa %s)";
+        String result = "(relacion-tiempo \"%s\")";
+        if(relacionFecha != null) {
+            result += String.format(result, relacionFecha.getValorInferencia());
+        } else {
+            result += String.format(result, "no especifica");
+        }
+
+        return String.format(losaTemplate, result);
+    }
 }

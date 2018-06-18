@@ -27,4 +27,10 @@ public class ConsultaDto {
             setFechaCreacion(entity.getFechaCreacion());
         }
     }
+
+    public String toClips() {
+        return this.parametro.toClips();
+    }
+
+
 }
