@@ -1,12 +1,13 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom'
+import {CSSTransition, TransitionGroup} from "react-transition-group";
 import PageIndex from "../component/PageIndex";
 import PageHome from "../component/PageHome";
 import FragmentHome from "../component/FragmentHome";
-import {ROUTE_HOME, ROUTE_HOME_DIAGNOSTICO, ROUTE_HOME_HISTORIAL, ROUTE_ROOT} from "../util/URLUtil";
-import {CSSTransition, TransitionGroup} from "react-transition-group";
 import FragmentCarga from "../component/FragmentCarga";
 import FragmentHistorial from "../component/FragmentHistorial";
+import FragmentVerConsulta from "../component/FragmentVerConsulta";
+import {ROUTE_HOME, ROUTE_HOME_DIAGNOSTICO, ROUTE_HOME_HISTORIAL, ROUTE_HOME_VER_DIAGNOSTICO, ROUTE_ROOT} from "../util/URLUtil";
 
 export const RouterRoot = () => (
     <Route render={({ location }) =>
@@ -26,8 +27,9 @@ export const RouterApp = () => {
     return (
         <Switch>
             <Route exact path={ROUTE_HOME} component={ FragmentHome }/>
-            <Route path={ROUTE_HOME_DIAGNOSTICO} component={ FragmentCarga }/>
-            <Route path={ROUTE_HOME_HISTORIAL} component={ FragmentHistorial }/>
+            <Route exact path={ROUTE_HOME_DIAGNOSTICO} component={ FragmentCarga }/>
+            <Route exact path={ROUTE_HOME_HISTORIAL} component={ FragmentHistorial }/>
+            <Route path={ROUTE_HOME_VER_DIAGNOSTICO} component={ FragmentVerConsulta }/>
             <Route component={FragmentHome}/>
         </Switch>
     );

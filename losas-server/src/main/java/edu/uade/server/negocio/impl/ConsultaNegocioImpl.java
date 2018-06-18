@@ -146,7 +146,7 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
 
     @Override
     public ConsultaDto getByCodigo(Long codigo) {
-        return null;
+        return consultaDao.findByCodigo(codigo);
     }
 
     @Override

@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from "react-router-dom";
 import {List, ListItem, ListItemIcon, ListItemText, ListSubheader, Paper, Typography, withStyles} from "@material-ui/core";
 import WarningIcon from '@material-ui/icons/Warning';
 import CheckIcon from '@material-ui/icons/Check';
-import {TITULO_LISTA_HISTORIAL} from "../util/MensajesUtil";
+import {CREAR_ROUTE_HOME_VER_DIAGNOSTICO} from "../util/URLUtil";
+import {mostrarMensajeError, requestObtenerConsultaTodo} from "../data/DataConfig";
+import {FORMATO_FECHA_HORA, MENSAJE_TITULO_ITEM_PRIMARIO, MENSAJE_TITULO_ITEM_SECUNDARIO, TITULO_LISTA_HISTORIAL} from "../util/MensajesUtil";
 
 const styles = (theme) => ({
     root: {
@@ -30,25 +33,33 @@ class FragmentHistorial extends React.Component {
 
     componentDidMount() {
         // LLAMAR SERVICIO
-        this.setState({
-            historial: [
-                {
-                    id: 1,
-                    fechaCreacion: '11',
-                    resultado: {}
-                },
-                {
-                    id: 1,
-                    fechaCreacion: '11'
-                },
-                {
-                    id: 1,
-                    fechaCreacion: '11',
-                    resultado: {}
-                },
-            ]
-        })
+        requestObtenerConsultaTodo()
+            .then((resultado) => {
+                this.setState({
+                    historial: this.transformarHistorial(resultado)
+                });
+            })
+            .catch((error) => {
+                mostrarMensajeError(error);
+            })
+        ;
     }
+
+    transformarHistorial(data) {
+        return data
+            .sort((a, b) => {
+                return new Date(b.fechaCreacion) - new Date(a.fechaCreacion);
+            })
+            .map((elem) => {
+                return {
+                    codigo: elem.codigo,
+                    fechaCreacion: FORMATO_FECHA_HORA(elem.fechaCreacion),
+                    resultado: elem.diagnostico
+                };
+        });
+    }
+
+    renderLink = itemProps => <Link to={this.props.to} {...itemProps} />;
 
     render(){
         const { classes } = this.props;
@@ -67,24 +78,19 @@ class FragmentHistorial extends React.Component {
                     >
                     {
                         historial.map((elem, index) => {
-                            const consulta = {
-                                id: elem.id,
-                                fechaCreacion: elem.fechaCreacion,
-                                resultado: elem.resultado
-                            };
                             return (
-                                <ListItem key={index} button className={classes.panelItem}>
+                                <ListItem key={index} button className={classes.panelItem} to={CREAR_ROUTE_HOME_VER_DIAGNOSTICO(elem.codigo)} component={this.renderLink}>
                                     <ListItemIcon>
                                     {
-                                    consulta.resultado ?
+                                        elem.resultado ?
                                         <CheckIcon />
                                         :
                                         <WarningIcon />
                                     }
                                     </ListItemIcon>
                                     <ListItemText
-                                        primary={consulta.id}
-                                        secondary={consulta.fechaCreacion}
+                                        primary={MENSAJE_TITULO_ITEM_PRIMARIO(elem.fechaCreacion)}
+                                        secondary={MENSAJE_TITULO_ITEM_SECUNDARIO(elem.codigo)}
                                     />
                                 </ListItem>
                             );
