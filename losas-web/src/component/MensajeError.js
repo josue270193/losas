@@ -56,9 +56,8 @@ class MensajeError extends React.Component {
         };
     }
 
-    // eslint-disable-next-line
-    componentWillReceiveProps(nextProps, nextContext){
-        this.setState({ open: nextProps.open });
+    static getDerivedStateFromProps(props) {
+        this.setState({ open: props.open });
     }
 
     onCerrarMensaje= () => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Prompt, Redirect} from "react-router-dom";
 import {Button, CircularProgress, Divider, Hidden, Paper, Step, StepLabel, Stepper, Typography, withStyles} from "@material-ui/core";
 import {
     MENSAJE_ALERTA_CANCELACION,
@@ -9,13 +10,14 @@ import {
     MENSAJE_EVALUACION_NO_DESTRUCTIVA,
     MENSAJE_FINALIZAR,
     MENSAJE_REINICIAR,
-    MENSAJE_SIGUIENTE
+    MENSAJE_SIGUIENTE,
+    TITULO_HOME_DIAGNOSTICO
 } from "../util/MensajesUtil";
 import ConsultaPaso1 from "./ConsultaPaso1";
 import ConsultaPaso2 from "./ConsultaPaso2";
 import ConsultaPaso3 from "./ConsultaPaso3";
-import {Prompt} from "react-router-dom";
 import {mostrarMensajeError, requestDoConsulta} from "../data/DataConfig";
+import {CREAR_ROUTE_HOME_VER_DIAGNOSTICO} from "../util/URLUtil";
 
 const styles = (theme) => ({
     root: {
@@ -83,6 +85,7 @@ class FragmentCarga extends React.Component {
         data: crearNuevaConsulta(),
         activeStep: 0,
         loading: false,
+        completo: null,
     };
 
     handleNext = () => {
@@ -96,12 +99,13 @@ class FragmentCarga extends React.Component {
             if (this.state.activeStep === steps.length) {
                 requestDoConsulta(data)
                     .then((resultado) => {
-                        console.log(resultado);
+                        this.setState({
+                            completo: resultado.codigo,
+                            loading: false
+                        });
                     })
                     .catch((error) => {
                         mostrarMensajeError(error);
-                    })
-                    .finally(() => {
                         this.setState({
                             loading: false
                         });
@@ -135,15 +139,19 @@ class FragmentCarga extends React.Component {
 
     render(){
         const { classes } = this.props;
+        const { activeStep, data, loading, completo } = this.state;
         const steps = getSteps();
-        const { activeStep, data, loading } = this.state;
         const StepComponent = stepsContent[activeStep];
+
+        if (completo) {
+            return <Redirect to={CREAR_ROUTE_HOME_VER_DIAGNOSTICO(completo)} />;
+        }
 
         return (
             <div className={classes.root}>
                 <Paper elevation={0} className={classes.paperTitulo}>
                     <Typography variant="display1">
-                        Diagnostico
+                        {TITULO_HOME_DIAGNOSTICO}
                     </Typography>
                 </Paper>
                 <Stepper activeStep={activeStep} alternativeLabel>

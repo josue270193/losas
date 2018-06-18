@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from "react-dom";
 import axios from 'axios';
 import MensajeError from "../component/MensajeError";
-import {URL_CONFIGURACION_INICIAL, URL_CONSULTA_CONSULTAR, URL_HEALTH, URL_INFO} from "../util/URLUtil";
+import {URL_CONFIGURACION_INICIAL, URL_CONSULTA_CONSULTAR, URL_CONSULTA_LISTAR, URL_CONSULTA_OBTENER_CODIGO, URL_HEALTH, URL_INFO} from "../util/URLUtil";
 
 const CONFIGURACION_KEY = 'configuracion';
 
@@ -44,6 +44,34 @@ function transformarRequestConsulta(parametro) {
 export function requestDoConsulta(consulta){
     return new Promise((resolve, reject) => {
         axios.post(URL_CONSULTA_CONSULTAR, transformarRequestConsulta(consulta))
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((error) => {
+                let mensaje = procesarError(error);
+                reject(mensaje);
+            })
+        ;
+    });
+}
+
+export function requestObtenerConsultaTodo(){
+    return new Promise((resolve, reject) => {
+        axios.get(URL_CONSULTA_LISTAR)
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((error) => {
+                let mensaje = procesarError(error);
+                reject(mensaje);
+            })
+        ;
+    });
+}
+
+export function requestObtenerConsultaCodigo(codigo){
+    return new Promise((resolve, reject) => {
+        axios.get(URL_CONSULTA_OBTENER_CODIGO(codigo))
             .then((response) => {
                 resolve(response.data);
             })
