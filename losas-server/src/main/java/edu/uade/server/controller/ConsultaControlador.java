@@ -34,7 +34,7 @@ public class ConsultaControlador {
 
     @GetMapping(value = "/get-all")
     public List<ConsultaDto> getConsulta() {
-        ConsultaMapper.getInstance().map(new ConsultaDto());
+        ConsultaMapper.getInstance().mapConsulta(new ConsultaDto());
         return consultaService.getAll();
     }
 

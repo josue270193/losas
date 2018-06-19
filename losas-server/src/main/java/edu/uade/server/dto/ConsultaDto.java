@@ -28,9 +28,4 @@ public class ConsultaDto {
         }
     }
 
-    public String toClips() {
-        return this.parametro.toClips();
-    }
-
-
 }

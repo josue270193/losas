@@ -21,34 +21,25 @@ public class ConsultaParametroDto {
     private List<EvaluacionDestructivaDto> evaluacionesDestructiva = new ArrayList<>();
 
     public ConsultaParametroDto(ConsultaParametroEntity entity) {
-        if (entity != null){
+        if (entity != null) {
             setCodigo(entity.getCodigo());
             setEvaluacionLosa(new EvaluacionLosaDto(entity.getEvaluacionLosa()));
             evaluacionesFenomenoPatologico.addAll(
-                entity.getEvaluacionFenomenoPatologico().stream()
-                    .map(EvaluacionFenomenoPatologicoDto::new)
-                    .collect(Collectors.toList())
+                    entity.getEvaluacionFenomenoPatologico().stream()
+                            .map(EvaluacionFenomenoPatologicoDto::new)
+                            .collect(Collectors.toList())
             );
             evaluacionesNoDestructiva.addAll(
-                entity.getEvaluacionNoDestructiva().stream()
-                    .map(EvaluacionNoDestructivaDto::new)
-                    .collect(Collectors.toList())
+                    entity.getEvaluacionNoDestructiva().stream()
+                            .map(EvaluacionNoDestructivaDto::new)
+                            .collect(Collectors.toList())
             );
             evaluacionesDestructiva.addAll(
-                entity.getEvaluacionDestructiva().stream()
-                    .map(EvaluacionDestructivaDto::new)
-                    .collect(Collectors.toList())
+                    entity.getEvaluacionDestructiva().stream()
+                            .map(EvaluacionDestructivaDto::new)
+                            .collect(Collectors.toList())
             );
         }
     }
 
-    public String toClips() {
-        StringBuilder b = new StringBuilder();
-        if(evaluacionLosa != null) {
-            b.append(this.evaluacionLosa.toClips());
-            b.append("\r\n");
-        }
-
-        return b.toString();
-    }
 }

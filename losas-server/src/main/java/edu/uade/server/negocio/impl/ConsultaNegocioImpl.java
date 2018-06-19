@@ -3,6 +3,7 @@ package edu.uade.server.negocio.impl;
 import edu.uade.server.dao.ConsultaDao;
 import edu.uade.server.dto.*;
 import edu.uade.server.entity.*;
+import edu.uade.server.mapper.ConsultaMapper;
 import edu.uade.server.negocio.ConsultaNegocio;
 import net.sf.clipsrules.jni.Environment;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,8 +22,11 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
     @Value("${path.clips}")
     private String[] pathClip;
 
-    public ConsultaNegocioImpl(@Value("${path.lib}") String pathLib, ConsultaDao consultaDao) {
+    private ConsultaMapper mapper;
+
+    public ConsultaNegocioImpl(@Value("${path.lib}") String pathLib, ConsultaDao consultaDao, ConsultaMapper mapper) {
         this.consultaDao = consultaDao;
+        this.mapper = mapper;
 
         System.setProperty("java.library.path", pathLib);
         Field fieldSysPath;
@@ -44,6 +48,7 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
             for (String path : pathClip){
                 clips.loadFromResource(path);
             }
+            clips.loadFacts(this.mapper.mapConsulta(consulta));
             clips.run();
 
 //            Guardar en BD

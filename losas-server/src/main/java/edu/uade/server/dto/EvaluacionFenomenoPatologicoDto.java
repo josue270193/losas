@@ -1,5 +1,6 @@
 package edu.uade.server.dto;
 
+import edu.uade.server.dao.ConsultaDao;
 import edu.uade.server.dto.enumerado.UbicacionFenomenoEnum;
 import edu.uade.server.entity.EvaluacionFenomenoPatologicoEntity;
 import lombok.AllArgsConstructor;
@@ -23,5 +24,9 @@ public class EvaluacionFenomenoPatologicoDto {
             setUbicacion(entity.getUbicacion());
             setCumpleNorma(entity.getCumpleNorma());
         }
+    }
+
+    public String toClips() {
+        return "";
     }
 }
