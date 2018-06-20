@@ -58,7 +58,8 @@ class ConsultaPaso1 extends React.Component {
         let dataItem = [];
         event.target.value.map((item) => {
             dataItem.push({
-                codigo: item
+                codigo: item,
+                valorInferencia: this.state.opcionesEvaluacionInicial.find(i => i.codigo === item).valorInferencia
             });
             return item;
         });

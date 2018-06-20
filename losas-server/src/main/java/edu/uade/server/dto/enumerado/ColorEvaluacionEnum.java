@@ -13,8 +13,8 @@ public enum ColorEvaluacionEnum {
     MARRON("Marron", "marron"),
     BLANCO("Blanco", "blanco"),
     CRISTALINO("Cristalino", "cristalino"),
-    AMARRILLO("Amarrillo", "amarrillo"),
-    DESCONOCIDO("No sabe / No Aplica", "no")
+    AMARRILLO("Amarrillo", "amarillo"),
+    DESCONOCIDO("No sabe / No Aplica", "no aplica")
     ;
 
     @Getter private String descripcion;

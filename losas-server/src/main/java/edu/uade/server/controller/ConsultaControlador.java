@@ -1,7 +1,6 @@
 package edu.uade.server.controller;
 
 import edu.uade.server.dto.ConsultaDto;
-import edu.uade.server.mapper.ConsultaMapper;
 import edu.uade.server.negocio.ConsultaNegocio;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,7 +33,6 @@ public class ConsultaControlador {
 
     @GetMapping(value = "/get-all")
     public List<ConsultaDto> getConsulta() {
-        ConsultaMapper.getInstance().mapConsulta(new ConsultaDto());
         return consultaService.getAll();
     }
 

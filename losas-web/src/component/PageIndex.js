@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from "classnames";
 import {Link} from "react-router-dom";
 import {AppBar, Button, Toolbar, Typography, withStyles} from "@material-ui/core";
-import {MENSAJE_INICIO, TITULO_APLICATIVO} from "../util/MensajesUtil";
+import {IMAGEN_TITULO, MENSAJE_INICIO} from "../util/MensajesUtil";
 import {ROUTE_HOME_DIAGNOSTICO} from "../util/URLUtil";
 
 const styles = (theme) => ({
@@ -32,7 +32,8 @@ const styles = (theme) => ({
     content: {
         width: '0',
         flexGrow: 1,
-        backgroundColor: theme.palette.background.default,
+        background: 'url('+IMAGEN_TITULO+') no-repeat center center fixed',
+        backgroundSize: 'cover',
         padding: theme.spacing.unit * 1,
         height: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`,
         marginTop: theme.mixins.toolbar.minHeight,
@@ -40,7 +41,7 @@ const styles = (theme) => ({
             height: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`,
             marginTop: theme.mixins.toolbar.minHeight
         },
-        overflowY: 'auto'
+        overflow: 'hidden'
     },
     button: {
         margin: theme.spacing.unit,
@@ -56,6 +57,9 @@ const styles = (theme) => ({
     centradoTexto: {
         width: '100%',
         textAlign: 'center',
+    },
+    centradoImagen: {
+        width: '400px',
     }
 });
 
@@ -78,10 +82,10 @@ class PageIndex extends React.Component {
                         </Toolbar>
                     </AppBar>
                     <div className={classes.content}>
+                        {/*<img src={IMAGEN_TITULO} alt={TITULO_APLICATIVO} className={classes.centradoImagen}/>*/}
                         <Typography variant="display4" className={classes.centradoTexto}>
-                            {TITULO_APLICATIVO}
                         </Typography>
-                        <Button component={LinkCustom} variant="outlined" className={classNames(classes.button, classes.centrado)}>
+                        <Button component={LinkCustom} variant="contained" className={classNames(classes.button, classes.centrado)}>
                             {MENSAJE_INICIO}
                         </Button>
                     </div>

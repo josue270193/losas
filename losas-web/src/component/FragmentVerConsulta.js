@@ -1,27 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    Avatar,
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    Chip,
-    Divider,
-    ExpansionPanel,
-    ExpansionPanelDetails,
-    ExpansionPanelSummary,
-    Grid,
-    GridList,
-    GridListTile,
-    GridListTileBar,
-    Paper,
-    Typography,
-    withStyles
-} from "@material-ui/core";
-import DoneIcon from '@material-ui/icons/Done';
-import ErrorIcon from '@material-ui/icons/ErrorOutline';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import classNames from 'classnames';
+import {Button, Card, CardActions, CardContent, Chip, Divider, Grid, GridList, GridListTile, GridListTileBar, Paper, Typography, withStyles} from "@material-ui/core";
+import red from '@material-ui/core/colors/red';
+import green from '@material-ui/core/colors/green';
 
 import {
     CAMPO_EVALUACION_DESTRUCTIVA,
@@ -32,6 +14,8 @@ import {
     FORMATO_FECHA_HORA,
     IMAGEN_VALOR_DIAGNOSTICO,
     MENSAJE_BOTON_COPIAR,
+    MENSAJE_CUMPLE_NORMA,
+    MENSAJE_NO_CUMPLE_NORMA,
     MENSAJE_VALOR_DIAGNOSTICO,
     TITULO_DIAGNOSTICO_PARAMETROS,
     TITULO_DIAGNOSTICO_RESPUESTA,
@@ -39,9 +23,15 @@ import {
     TITULO_VER_CONSULTA_SUBTITULO
 } from "../util/MensajesUtil";
 import {mostrarMensajeError, requestObtenerConsultaCodigo} from "../data/DataConfig";
+import {Link} from "react-router-dom";
+import {ROUTE_HOME_DIAGNOSTICO} from "../util/URLUtil";
+
+const colorValido = green[600];
+const colorInvalido = red[500];
 
 const styles = (theme) => ({
     root: {
+        maxWidth: '900px',
         margin: '0 auto'
     },
     paperTitulo: {
@@ -59,6 +49,9 @@ const styles = (theme) => ({
     gridRoot: {
         margin: `${theme.spacing.unit * 2}px 0`,
     },
+    gridTitulo: {
+        minHeight: `${theme.spacing.unit * 4}px`
+    },
     rootChip: {
         display: 'flex',
         padding: theme.spacing.unit,
@@ -70,8 +63,17 @@ const styles = (theme) => ({
         height: 'auto',
         minHeight: theme.spacing.unit * 4,
     },
+    chipInvalido: {
+        background: colorInvalido,
+        color: theme.palette.getContrastText(colorInvalido),
+    },
+    chipValido: {
+        background: colorValido,
+        color: theme.palette.getContrastText(colorValido),
+    },
     textoChip: {
-        width: '150px',
+        width: '100%',
+        minWidth: '150px',
         margin: `${theme.spacing.unit * 1}px 0`,
         textAlign: 'center',
     },
@@ -82,6 +84,9 @@ const styles = (theme) => ({
     imagenRespuesta: {
         height: '100%',
         objectFit: 'scale-down'
+    },
+    inlineLeyenda: {
+        display: 'inline-block',
     }
 });
 
@@ -132,6 +137,7 @@ class FragmentVerConsulta extends React.Component {
     render(){
         const { classes } = this.props;
         const { consulta, codigoRespuesta } = this.state;
+        const linkCopiar = (props) => <Link to={{pathname: ROUTE_HOME_DIAGNOSTICO, data: props.data}} {...props} />;
 
         return (
             <div className={classes.root}>
@@ -146,17 +152,18 @@ class FragmentVerConsulta extends React.Component {
                         </Typography>
                     </Paper>
                     <Grid container spacing={16}>
-                        <Grid item sm={12} md={6}>
-                            <Card >
+                        <Grid item xs={12} md={6}>
+                            <Card>
                                 <CardContent>
-                                    <Typography gutterBottom variant="headline" component="h2">
-                                        {TITULO_DIAGNOSTICO_RESPUESTA}
-                                    </Typography>
-
+                                    <div className={classes.gridTitulo}>
+                                        <Typography gutterBottom variant="headline" component="h2">
+                                            {TITULO_DIAGNOSTICO_RESPUESTA}
+                                        </Typography>
+                                    </div>
                                     <Divider className={classes.gridRoot}/>
 
                                     <Grid container spacing={0}>
-                                        <Grid item sm={12} md={7}>
+                                        <Grid item xs={12} >
                                             <GridList cellHeight={160} cols={1}>
                                                 <GridListTile cols={1}>
                                                     <img className={classes.imagenRespuesta} src={IMAGEN_VALOR_DIAGNOSTICO(codigoRespuesta)} alt={MENSAJE_VALOR_DIAGNOSTICO(codigoRespuesta)}/>
@@ -166,52 +173,65 @@ class FragmentVerConsulta extends React.Component {
                                                 </GridListTile>
                                             </GridList>
                                         </Grid>
-                                        <Grid item sm={12} md={5}>
-                                            <ExpansionPanel>
-                                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                                    <Typography className={classes.textoRespuesta}>
-                                                        {MENSAJE_VALOR_DIAGNOSTICO(codigoRespuesta)}
-                                                    </Typography>
-                                                </ExpansionPanelSummary>
-                                                <ExpansionPanelDetails>
-                                                    <Typography>
-                                                        Descripcion
-                                                    </Typography>
-                                                </ExpansionPanelDetails>
-                                            </ExpansionPanel>
+                                        <Grid item xs={12} >
+
                                         </Grid>
                                     </Grid>
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item sm={12} md={6}>
+                        <Grid item xs={12} md={6}>
                             <Card >
                                 <CardContent>
-                                    <Typography gutterBottom variant="headline" component="h2">
-                                        {TITULO_DIAGNOSTICO_PARAMETROS}
-                                    </Typography>
+                                    <Grid container spacing={0} className={classes.gridTitulo}>
+                                        <Grid item xs={12} lg={8}>
+                                            <Typography gutterBottom variant="headline" component="h2">
+                                                {TITULO_DIAGNOSTICO_PARAMETROS}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs lg>
+                                            <Grid container spacing={8}>
+                                                <Grid item xs={6} lg={6}>
+                                                    <Typography gutterBottom variant="caption">
+                                                        {MENSAJE_CUMPLE_NORMA}
+                                                        <div className={classes.chipValido}>
+                                                            &nbsp;
+                                                        </div>
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={6} lg={6}>
+                                                    <Typography gutterBottom variant="caption">
+                                                        {MENSAJE_NO_CUMPLE_NORMA}
+                                                        <div className={classes.chipInvalido}>
+                                                            &nbsp;
+                                                        </div>
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
 
                                     <Divider className={classes.gridRoot}/>
 
                                     <Grid container spacing={0}>
-                                        <Grid item sm={12} md={6}>
-                                            <Typography variant="title" gutterBottom>
+                                        <Grid item xs={12} >
+                                            <Typography variant="body2" gutterBottom>
                                                 {CAMPO_RELACION_FECHA}
                                             </Typography>
                                         </Grid>
-                                        <Grid item sm={12} md={6}>
-                                            <Typography variant="subheading" gutterBottom className={classes.textoAlineado}>
+                                        <Grid item xs={12} >
+                                            <Typography variant="body1" gutterBottom className={classes.textoAlineado}>
                                                 {consulta.parametro.evaluacionLosa.relacionFecha.descripcion}
                                             </Typography>
                                         </Grid>
                                     </Grid>
                                     <Grid container spacing={0}>
-                                        <Grid item sm={12} md={6} className={classes.columnaTitulo}>
-                                            <Typography variant="title" gutterBottom>
+                                        <Grid item xs={12} className={classes.columnaTitulo}>
+                                            <Typography variant="body2" gutterBottom>
                                                 {CAMPO_EVALUACION_INICIAL}
                                             </Typography>
                                         </Grid>
-                                        <Grid item sm={12} md={6}>
+                                        <Grid item xs={12} >
                                             {consulta.parametro.evaluacionLosa.valoresInicial.map((elem, index) =>
                                                 <div key={index} className={classes.rootChip}>
                                                     <Chip key={index} label={elem.descripcion} className={classes.chip} />
@@ -220,82 +240,81 @@ class FragmentVerConsulta extends React.Component {
                                         </Grid>
                                     </Grid>
                                     <Grid container spacing={0}>
-                                        <Grid item sm={12} md={6} className={classes.columnaTitulo}>
-                                            <Typography variant="title" gutterBottom>
+                                        <Grid item xs={12} className={classes.columnaTitulo}>
+                                            <Typography variant="body2" gutterBottom>
                                                 {CAMPO_FENOMENOS_PATOLOGICO}
                                             </Typography>
                                         </Grid>
-                                        <Grid item sm={12} md={6}>
+                                        <Grid item xs={12} >
+                                            <Grid container spacing={0}>
                                             {consulta.parametro.evaluacionesFenomenoPatologico.map((elem, index) =>
-                                                <div key={index} className={classes.rootChip}>
-                                                    <Chip key={index} label={elem.valor.descripcion} className={classes.chip}
-                                                        avatar={
-                                                            <Avatar>
-                                                                {elem.cumpleNorma ?
-                                                                    <DoneIcon/> : <ErrorIcon/>
-                                                                }
-                                                            </Avatar>
-                                                        }
-                                                    />
-                                                    <Typography variant="subheading" gutterBottom className={classes.textoChip}>
-                                                        {elem.ubicacion.descripcion}
-                                                    </Typography>
-                                                </div>
+                                                <React.Fragment key={index}>
+                                                    <Grid item xs={12} lg={6} className={classes.rootChip}>
+                                                        <Chip key={index} label={elem.valor.descripcion}
+                                                              className={classNames(classes.chip, elem.cumpleNorma ? classes.chipValido : classes.chipInvalido)}
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={12} lg={6} className={classes.rootChip}>
+                                                        <Typography variant="body1" gutterBottom className={classes.textoChip}>
+                                                            {elem.ubicacion.descripcion}
+                                                        </Typography>
+                                                    </Grid>
+                                                </React.Fragment>
                                             )}
+                                            </Grid>
                                         </Grid>
                                     </Grid>
                                     <Grid container spacing={0}>
-                                        <Grid item sm={12} md={6} className={classes.columnaTitulo}>
-                                            <Typography variant="title" gutterBottom>
+                                        <Grid item xs={12} className={classes.columnaTitulo}>
+                                            <Typography variant="body2" gutterBottom>
                                                 {CAMPO_EVALUACION_NO_DESTRUCTIVA}
                                             </Typography>
                                         </Grid>
-                                        <Grid item sm={12} md={6}>
+                                        <Grid item xs={12} >
+                                            <Grid container spacing={0}>
                                             {consulta.parametro.evaluacionesNoDestructiva.map((elem, index) =>
-                                                <div key={index} className={classes.rootChip}>
-                                                    <Chip key={index} label={elem.valor.descripcion} className={classes.chip}
-                                                          avatar={
-                                                              <Avatar>
-                                                                  {elem.cumpleNorma ?
-                                                                      <DoneIcon/> : <ErrorIcon/>
-                                                                  }
-                                                              </Avatar>
-                                                          }
-                                                    />
-                                                    <Typography variant="subheading" gutterBottom className={classes.textoChip}>
-                                                        {elem.colorEvaluacion.descripcion}
-                                                    </Typography>
-                                                </div>
+                                                <React.Fragment key={index}>
+                                                    <Grid item xs={12} lg={6} className={classes.rootChip}>
+                                                        <Chip key={index} label={elem.valor.descripcion}
+                                                              className={classNames(classes.chip, elem.cumpleNorma ? classes.chipValido : classes.chipInvalido)}
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={12} lg={6} className={classes.rootChip}>
+                                                        <Typography variant="body1" gutterBottom className={classes.textoChip}>
+                                                            {elem.colorEvaluacion.descripcion}
+                                                        </Typography>
+                                                    </Grid>
+                                                </React.Fragment>
                                             )}
+                                            </Grid>
                                         </Grid>
                                     </Grid>
                                     <Grid container spacing={0}>
-                                        <Grid item sm={12} md={6} className={classes.columnaTitulo}>
-                                            <Typography variant="title" gutterBottom>
+                                        <Grid item xs={12} className={classes.columnaTitulo}>
+                                            <Typography variant="body2" gutterBottom>
                                                 {CAMPO_EVALUACION_DESTRUCTIVA}
                                             </Typography>
                                         </Grid>
-                                        <Grid item sm={12} md={6}>
+                                        <Grid item xs={12} >
+                                            <Grid container spacing={0}>
                                             {consulta.parametro.evaluacionesDestructiva.map((elem, index) =>
-                                                <div key={index} className={classes.rootChip}>
-                                                    <Chip key={index} label={elem.valor.descripcion} className={classes.chip}
-                                                          avatar={
-                                                              <Avatar>
-                                                                  {elem.cumpleNorma ?
-                                                                      <DoneIcon/> : <ErrorIcon/>
-                                                                  }
-                                                              </Avatar>
-                                                          }
-                                                    />
-                                                </div>
+                                                <React.Fragment key={index}>
+                                                    <Grid item xs={12} lg={6} className={classes.rootChip}>
+                                                        <Chip key={index}
+                                                              label={elem.valor.descripcion}
+                                                              className={classNames(classes.chip, elem.cumpleNorma ? classes.chipValido : classes.chipInvalido)}
+                                                        />
+                                                    </Grid>
+                                                </React.Fragment>
                                             )}
+                                            </Grid>
                                         </Grid>
                                     </Grid>
 
                                 </CardContent>
                                 <Divider />
                                 <CardActions>
-                                    <Button size="small" color="primary" variant="outlined">
+                                    <Button size="small" color="primary" variant="outlined" component={linkCopiar} data={consulta.parametro}>
                                         {MENSAJE_BOTON_COPIAR}
                                     </Button>
                                 </CardActions>

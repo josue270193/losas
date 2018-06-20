@@ -11,8 +11,9 @@ import lombok.Getter;
 public enum RelacionFechaEnum {
 
     RECIEN("Reciente", "recien"),
-    CORTO_PLAZO("Corto Plazo (Menos de 30 dias)", "corto_plazo"),
-    LARGO_PLAZO("Largo Plazo (Mayor de 30 dias)", "largo_plazo")
+    CORTO_PLAZO("Corto Plazo (Menos de 30 dias)", "corto plazo"),
+    LARGO_PLAZO("Largo Plazo (Mayor de 30 dias)", "largo plazo"),
+    DESCONOCIDO("No sabe / No Aplica", "no especifica"),
     ;
 
     @Getter private String descripcion;
@@ -24,12 +25,12 @@ public enum RelacionFechaEnum {
                 return tipo;
             }
         }
-        return RECIEN;
+        return DESCONOCIDO;
     }
     @JsonCreator
     public static RelacionFechaEnum fromNode(JsonNode node) {
         if (!node.has("valorInferencia")){
-            return RelacionFechaEnum.RECIEN;
+            return RelacionFechaEnum.DESCONOCIDO;
         }
         String tipo = node.get("valorInferencia").asText();
         return RelacionFechaEnum.obtenerPorValorInferencia(tipo);

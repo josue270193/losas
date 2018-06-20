@@ -1,120 +1,146 @@
 package edu.uade.server.mapper;
 
-import edu.uade.server.dao.ValorDiagnosticoDao;
-import edu.uade.server.dao.ValorEvaluacionDestructivaDao;
-import edu.uade.server.dao.ValorEvaluacionNoDestructivaDao;
-import edu.uade.server.dao.ValorFenomenoPatologicoDao;
 import edu.uade.server.dto.*;
-import edu.uade.server.entity.ValorEvaluacionDestructivaEntity;
-import edu.uade.server.entity.ValorEvaluacionNoDestructivaEntity;
-import edu.uade.server.entity.ValorFenomenoPatologicoEntity;
-import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
-@Service
 public class ConsultaMapper {
 
-    public static final String ASSERT = "(assert %s)";
+    private static final String COMILLA_DOBLE = "\"";
+    private static final String ESPACIO = " ";
+    private static final String BUILD_TEMPLATE = "(%s %s)";
+    private static final String BUILD_MULTISLOT = "(%s " + COMILLA_DOBLE + "%s"+ COMILLA_DOBLE + " " + COMILLA_DOBLE + "%s" + COMILLA_DOBLE +")";
+    private static final String BUILD_SLOT = "(%s " + COMILLA_DOBLE + "%s"+ COMILLA_DOBLE +")";
 
-    private ValorFenomenoPatologicoDao fenomenoPatologicoDao;
+    private static final String ASSERT = "assert";
+    private static final String TEMPLATE_LOSA = "losa";
+    private static final String TEMPLATE_FENOMENO_PATOLOGICO = "fenomeno-patologico";
+    private static final String TEMPLATE_EVALUACION_NO_DESTRUCTIVA = "evaluacion-no-destructiva";
+    private static final String TEMPLATE_EVALUACION_DESTRUCTIVA = "propiedades-fq-concreto";
+    private static final String TEMPLATE_DIAGNOSTICO = "diagnostico";
+    private static final String SLOT_RELACION_TIEMPO = "relacion-tiempo";
+    private static final String SLOT_ESPECIFICACION_CONSTRUCCION = "cumple-especificaciones-construccion";
+    private static final String SLOT_DIMENSION_PLANO = "cumple-dimensiones-plano";
+    private static final String SLOT_TEMPERATURA_CONSTRUCCION = "cumple-temperatura-construccion-norma-cirsoc-201";
+    private static final String SLOT_HUMEDAD_RELATIVA = "cumple-humedad-relativa-construccion-norma-cirsoc-201";
+    private static final String SLOT_MEMORIA_CALCULO = "cuenta-memorias-calculo";
+    private static final String VALOR_SLOT_EXISTE = "existe";
+    private static final String VALOR_SLOT_NO_EXISTE = "no existe";
 
-    private ValorEvaluacionNoDestructivaDao valorNoDestructiva;
-
-    private ValorEvaluacionDestructivaDao valorDestructiva;
-
-    private ValorDiagnosticoDao valorDiagnostico;
-
-    public ConsultaMapper(ValorFenomenoPatologicoDao fenomenoPatologicoDao, ValorEvaluacionNoDestructivaDao valorNoDestructiva, ValorEvaluacionDestructivaDao valorDestructiva, ValorDiagnosticoDao valorDiagnostico) {
-        this.fenomenoPatologicoDao = fenomenoPatologicoDao;
-        this.valorNoDestructiva = valorNoDestructiva;
-        this.valorDestructiva = valorDestructiva;
-        this.valorDiagnostico = valorDiagnostico;
-    }
-
-    public String mapConsulta(ConsultaDto consulta) {
+    public static List<String> mapConsulta(ConsultaDto consulta) {
+        List<String> resultado = new ArrayList<>();
         ConsultaParametroDto parametros = consulta.getParametro();
-        EvaluacionLosaDto evaluacionLosa = parametros.getEvaluacionLosa();
-
-        StringBuilder b = new StringBuilder();
-
-        // LOSA
-        if (evaluacionLosa != null) {
-            b.append(mapLosa(evaluacionLosa));
-            b.append("\r\n");
-        }
-
-
-        // FENOMENOS PATOLOGICOS
-        if (parametros.getEvaluacionesFenomenoPatologico() != null && !parametros.getEvaluacionesFenomenoPatologico().isEmpty()) {
-            String fenomenoPatologicoTemplate = "(fenomeno-patologico %s)";
-            StringBuilder fenomenos = new StringBuilder();
-
-            for (EvaluacionFenomenoPatologicoDto fenomeno :
-                    parametros.getEvaluacionesFenomenoPatologico()) {
-
-                fenomenos.append(mapFenomenoPatologico(fenomeno));
+        if (parametros != null) {
+            // LOSA
+            if (parametros.getEvaluacionLosa() != null) {
+                resultado.add(mapLosa(parametros.getEvaluacionLosa()));
             }
-            b.append(String.format(fenomenoPatologicoTemplate, fenomenos.toString()));
-            b.append("\r\n");
-        }
-
-        // NO DESTRUCTIVA
-        if (parametros.getEvaluacionesNoDestructiva() != null && !parametros.getEvaluacionesNoDestructiva().isEmpty()) {
-            String noDestructivoTemplate = "(evaluacion-no-destructiva %s)";
-            StringBuilder noDestructivas = new StringBuilder();
-
-            for (EvaluacionNoDestructivaDto noDestructiva :
-                    parametros.getEvaluacionesNoDestructiva()) {
-
-                noDestructivas.append(mapEvaluacionNoDestructiva(noDestructiva));
+            // FENOMENOS PATOLOGICOS
+            if (parametros.getEvaluacionesFenomenoPatologico() != null && !parametros.getEvaluacionesFenomenoPatologico().isEmpty()) {
+                resultado.add(mapFenomenoPatologico(parametros.getEvaluacionesFenomenoPatologico()));
             }
-            b.append(String.format(noDestructivoTemplate, noDestructivas.toString()));
-            b.append("\r\n");
-        }
-
-        // PROPIEDADES CONCRETO
-        if (parametros.getEvaluacionesDestructiva() != null && !parametros.getEvaluacionesDestructiva().isEmpty()) {
-            String destructivoTemplate = "(propiedades-fq-concreto %s)";
-            StringBuilder destructivas = new StringBuilder();
-
-            for (EvaluacionDestructivaDto destructiva :
-                    parametros.getEvaluacionesDestructiva()) {
-
-                destructivas.append(mapEvaluacionDestructiva(destructiva));
+            // EVALUACIONES NO DESTRUCTIVA
+            if (parametros.getEvaluacionesNoDestructiva() != null && !parametros.getEvaluacionesNoDestructiva().isEmpty()) {
+                resultado.add(mapEvaluacionNoDestructiva(parametros.getEvaluacionesNoDestructiva()));
             }
-            b.append(String.format(destructivoTemplate, destructivas.toString()));
-            b.append("\r\n");
+            // EVALUACIONES DESTRUCTIVA
+            if (parametros.getEvaluacionesDestructiva() != null && !parametros.getEvaluacionesDestructiva().isEmpty()) {
+                resultado.add(mapEvaluacionDestructiva(parametros.getEvaluacionesDestructiva()));
+            }
         }
-
-        return b.toString();
+        return resultado;
     }
 
+    private static String mapEvaluacionDestructiva(List<EvaluacionDestructivaDto> dtos) {
+        StringBuilder slots = new StringBuilder();
 
-    private String mapLosa(EvaluacionLosaDto losa) {
-        String losaTemplate = "(losa %s)";
-        String result = "(relacion-tiempo \"%s\")";
+
+
+        String template = String.format(BUILD_TEMPLATE, TEMPLATE_EVALUACION_DESTRUCTIVA, slots);
+        return String.format(BUILD_TEMPLATE, ASSERT, template);
+    }
+
+    private static String mapEvaluacionNoDestructiva(List<EvaluacionNoDestructivaDto> dtos) {
+        StringBuilder slots = new StringBuilder();
+
+
+
+        String template = String.format(BUILD_TEMPLATE, TEMPLATE_EVALUACION_NO_DESTRUCTIVA, slots);
+        return String.format(BUILD_TEMPLATE, ASSERT, template);
+    }
+
+    private static String mapFenomenoPatologico(List<EvaluacionFenomenoPatologicoDto> dtos) {
+        StringBuilder slots = new StringBuilder();
+
+
+
+        String template = String.format(BUILD_TEMPLATE, TEMPLATE_FENOMENO_PATOLOGICO, slots);
+        return String.format(BUILD_TEMPLATE, ASSERT, template);
+    }
+
+    private static String mapLosa(EvaluacionLosaDto losa) {
+        StringBuilder slots = new StringBuilder();
         if (losa.getRelacionFecha() != null) {
-            result += String.format(result, losa.getRelacionFecha().getValorInferencia());
-        } else {
-            result += String.format(result, "no especifica");
+            slots.append(String.format(BUILD_SLOT, SLOT_RELACION_TIEMPO, losa.getRelacionFecha().getValorInferencia()));
+            slots.append(ESPACIO);
         }
 
-        return String.format(losaTemplate, result);
+        boolean agregarValor1 = true;
+        boolean agregarValor2 = true;
+        boolean agregarValor4 = true;
+        boolean agregarValor5 = true;
+        boolean agregarValor6 = true;
+
+        for (ValorInicialDto valorInicialDto : losa.getValoresInicial()) {
+            if (valorInicialDto.getCodigo().compareTo(4L) == 0) {
+                agregarValor4 = false;
+                slots.append(String.format(BUILD_SLOT, valorInicialDto.getValorInferencia(), VALOR_SLOT_NO_EXISTE));
+                slots.append(ESPACIO);
+            } else if (valorInicialDto.getCodigo().compareTo(5L) == 0) {
+                agregarValor5 = false;
+                slots.append(String.format(BUILD_SLOT, valorInicialDto.getValorInferencia(), VALOR_SLOT_NO_EXISTE));
+                slots.append(ESPACIO);
+            } else if (valorInicialDto.getCodigo().compareTo(1L) == 0) {
+                agregarValor1 = false;
+                slots.append(String.format(BUILD_SLOT, valorInicialDto.getValorInferencia(), VALOR_SLOT_NO_EXISTE));
+                slots.append(ESPACIO);
+            } else if (valorInicialDto.getCodigo().compareTo(2L) == 0) {
+                agregarValor2 = false;
+                slots.append(String.format(BUILD_SLOT, valorInicialDto.getValorInferencia(), VALOR_SLOT_NO_EXISTE));
+                slots.append(ESPACIO);
+            } else if (valorInicialDto.getCodigo().compareTo(6L) == 0) {
+                agregarValor6 = false;
+                slots.append(String.format(BUILD_SLOT, valorInicialDto.getValorInferencia(), VALOR_SLOT_NO_EXISTE));
+                slots.append(ESPACIO);
+            } else {
+                slots.append(String.format(BUILD_SLOT, valorInicialDto.getValorInferencia(), VALOR_SLOT_EXISTE));
+                slots.append(ESPACIO);
+            }
+        }
+        if (agregarValor4) {
+            slots.append(String.format(BUILD_SLOT, SLOT_ESPECIFICACION_CONSTRUCCION, VALOR_SLOT_EXISTE));
+            slots.append(ESPACIO);
+        }
+        if (agregarValor5) {
+            slots.append(String.format(BUILD_SLOT, SLOT_DIMENSION_PLANO, VALOR_SLOT_EXISTE));
+            slots.append(ESPACIO);
+        }
+        if (agregarValor1) {
+            slots.append(String.format(BUILD_SLOT, SLOT_TEMPERATURA_CONSTRUCCION, VALOR_SLOT_EXISTE));
+            slots.append(ESPACIO);
+        }
+        if (agregarValor2) {
+            slots.append(String.format(BUILD_SLOT, SLOT_HUMEDAD_RELATIVA, VALOR_SLOT_EXISTE));
+            slots.append(ESPACIO);
+        }
+        if (agregarValor6) {
+            slots.append(String.format(BUILD_SLOT, SLOT_MEMORIA_CALCULO, VALOR_SLOT_EXISTE));
+            slots.append(ESPACIO);
+        }
+
+        String template = String.format(BUILD_TEMPLATE, TEMPLATE_LOSA, slots);
+        return String.format(BUILD_TEMPLATE, ASSERT, template);
     }
 
-    private String mapFenomenoPatologico(EvaluacionFenomenoPatologicoDto fenomeno) {
-
-        return String.format("(%s %s)", fenomeno.getValor().getDescripcion(), fenomeno.getValor().getValorInferencia());
-    }
-
-    private String mapEvaluacionNoDestructiva(EvaluacionNoDestructivaDto noDestructiva) {
-
-        return String.format("(%s %s)", noDestructiva.getValor().getDescripcion(), noDestructiva.getValor().getValorInferencia());
-    }
-
-    private String mapEvaluacionDestructiva(EvaluacionDestructivaDto destructiva) {
-
-        return String.format("(%s %s)", destructiva.getValor().getDescripcion(), destructiva.getValor().getValorInferencia());
-    }
 }

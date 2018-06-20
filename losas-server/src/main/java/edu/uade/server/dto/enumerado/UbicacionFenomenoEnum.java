@@ -10,10 +10,10 @@ import lombok.Getter;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum UbicacionFenomenoEnum {
 
-    GRADOS_45_APOYO("45º Cerca de los apoyos", "45"),
+    GRADOS_45_APOYO("45º Cerca de los apoyos", "45 grados cerca de los apoyos"),
     CENTRO("Centro", "centro"),
-    MALLADO("Ambos Sentido / Mallado", "mallado"),
-    DESCONOCIDO("No sabe / No Aplica", "no")
+    MALLADO("Ambos Sentido / Mallado", "ambos sentido o mallado"),
+    DESCONOCIDO("No sabe / No Aplica", "no sabe no aplica")
     ;
 
     @Getter private String descripcion;

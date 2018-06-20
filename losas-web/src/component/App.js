@@ -11,8 +11,14 @@ const theme = createMuiTheme({
                 justifyContent: 'center',
                 userSelect: 'text',
                 textAlign: 'center',
+                fontWeight: 'bold',
             },
         },
+        MuiInputLabel: {
+            formControl: {
+                fontWeight: 'bold',
+            }
+        }
     },
 });
 

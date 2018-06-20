@@ -97,6 +97,7 @@ async function requestObtenerConfiguracionInicial() {
 }
 
 function procesarError(error) {
+    console.log(error);
     let mensaje;
     if (error.response && error.response.data) {
         if (typeof error.response.data === "string"){

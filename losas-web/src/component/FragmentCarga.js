@@ -81,12 +81,16 @@ const crearNuevaConsulta = () => {
 
 class FragmentCarga extends React.Component {
 
-    state = {
-        data: crearNuevaConsulta(),
-        activeStep: 0,
-        loading: false,
-        completo: null,
-    };
+    constructor(prop) {
+        super(prop);
+        this.state = {
+            data: prop.location.data || crearNuevaConsulta(),
+            activeStep: 0,
+            loading: false,
+            completo: null,
+        };
+    }
+
 
     handleNext = () => {
         const { activeStep, data } = this.state;

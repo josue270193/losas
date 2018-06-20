@@ -56,8 +56,10 @@ class MensajeError extends React.Component {
         };
     }
 
-    static getDerivedStateFromProps(props) {
-        this.setState({ open: props.open });
+    static getDerivedStateFromProps(props, state) {
+        return {
+            open: props.open === state.open
+        }
     }
 
     onCerrarMensaje= () => {

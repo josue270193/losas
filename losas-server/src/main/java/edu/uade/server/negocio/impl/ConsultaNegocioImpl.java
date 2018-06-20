@@ -6,6 +6,7 @@ import edu.uade.server.entity.*;
 import edu.uade.server.mapper.ConsultaMapper;
 import edu.uade.server.negocio.ConsultaNegocio;
 import net.sf.clipsrules.jni.Environment;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +23,9 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
     @Value("${path.clips}")
     private String[] pathClip;
 
-    private ConsultaMapper mapper;
-
-    public ConsultaNegocioImpl(@Value("${path.lib}") String pathLib, ConsultaDao consultaDao, ConsultaMapper mapper) {
+    @Autowired
+    public ConsultaNegocioImpl(@Value("${path.lib}") String pathLib, ConsultaDao consultaDao) {
         this.consultaDao = consultaDao;
-        this.mapper = mapper;
 
         System.setProperty("java.library.path", pathLib);
         Field fieldSysPath;
@@ -43,13 +42,20 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
     public ConsultaDto doConsulta(ConsultaDto consulta) {
         try {
 //            Realizo la consulta en CLIPS
+            List<String> listaAssert = ConsultaMapper.mapConsulta(consulta);
 
             clips = new Environment();
             for (String path : pathClip){
                 clips.loadFromResource(path);
             }
-            clips.loadFacts(this.mapper.mapConsulta(consulta));
+            clips.reset();
+            for (String eval : listaAssert){
+                clips.eval(eval);
+            }
             clips.run();
+
+            String resultado = clips.getInputBuffer();
+            clips.destroy();
 
 //            Guardar en BD
             consulta = guardarConsulta(consulta);
