@@ -10,8 +10,8 @@ public class ConsultaMapper {
     private static final String COMILLA_DOBLE = "\"";
     private static final String ESPACIO = " ";
     private static final String BUILD_TEMPLATE = "(%s %s)";
-    private static final String BUILD_MULTISLOT = "(%s " + COMILLA_DOBLE + "%s"+ COMILLA_DOBLE + " " + COMILLA_DOBLE + "%s" + COMILLA_DOBLE +")";
-    private static final String BUILD_SLOT = "(%s " + COMILLA_DOBLE + "%s"+ COMILLA_DOBLE +")";
+    private static final String BUILD_MULTISLOT = "(%s " + COMILLA_DOBLE + "%s" + COMILLA_DOBLE + " " + COMILLA_DOBLE + "%s" + COMILLA_DOBLE + ")";
+    private static final String BUILD_SLOT = "(%s " + COMILLA_DOBLE + "%s" + COMILLA_DOBLE + ")";
 
     private static final String ASSERT = "assert";
     private static final String TEMPLATE_LOSA = "losa";
@@ -53,29 +53,63 @@ public class ConsultaMapper {
     }
 
     private static String mapEvaluacionDestructiva(List<EvaluacionDestructivaDto> dtos) {
-        StringBuilder slots = new StringBuilder();
+        List<String> multislot = new ArrayList<String>();
 
+        for (EvaluacionDestructivaDto eval : dtos) {
+            StringBuilder slots = new StringBuilder();
+            // Evaluacion
+            if(eval.getCumpleNorma()) {
 
+            } else {
 
-        String template = String.format(BUILD_TEMPLATE, TEMPLATE_EVALUACION_DESTRUCTIVA, slots);
+            }
+
+            // Valor
+            ValorEvaluacionDestructivaDto valor = eval.getValor();
+            slots.append("(");
+            slots.append(valor.getDescripcion());
+            slots.append(" ");
+            slots.append(valor.getValorInferencia());
+            slots.append(")");
+            multislot.add(slots.toString());
+        }
+        String template = String.format(BUILD_TEMPLATE, TEMPLATE_EVALUACION_DESTRUCTIVA, String.join(" ", multislot));
         return String.format(BUILD_TEMPLATE, ASSERT, template);
     }
 
     private static String mapEvaluacionNoDestructiva(List<EvaluacionNoDestructivaDto> dtos) {
-        StringBuilder slots = new StringBuilder();
+        List<String> multislot = new ArrayList<String>();
 
+        for (EvaluacionNoDestructivaDto eval : dtos) {
+            StringBuilder slots = new StringBuilder();
+            ValorEvaluacionNoDestructivaDto valor = eval.getValor();
+            slots.append("(");
+            slots.append(valor.getDescripcion());
+            slots.append(" ");
+            slots.append(valor.getValorInferencia());
+            slots.append(")");
+            multislot.add(slots.toString());
+        }
 
-
-        String template = String.format(BUILD_TEMPLATE, TEMPLATE_EVALUACION_NO_DESTRUCTIVA, slots);
+        String template = String.format(BUILD_TEMPLATE, TEMPLATE_EVALUACION_NO_DESTRUCTIVA, String.join(" ", multislot));
         return String.format(BUILD_TEMPLATE, ASSERT, template);
     }
 
     private static String mapFenomenoPatologico(List<EvaluacionFenomenoPatologicoDto> dtos) {
-        StringBuilder slots = new StringBuilder();
+        List<String> multislot = new ArrayList<String>();
 
+        for (EvaluacionFenomenoPatologicoDto eval : dtos) {
+            StringBuilder slots = new StringBuilder();
+            ValorFenomenoPatologicoDto valor = eval.getValor();
+            slots.append("(");
+            slots.append(valor.getDescripcion());
+            slots.append(" ");
+            slots.append(valor.getValorInferencia());
+            slots.append(")");
+            multislot.add(slots.toString());
+        }
 
-
-        String template = String.format(BUILD_TEMPLATE, TEMPLATE_FENOMENO_PATOLOGICO, slots);
+        String template = String.format(BUILD_TEMPLATE, TEMPLATE_FENOMENO_PATOLOGICO, String.join(" ", multislot));
         return String.format(BUILD_TEMPLATE, ASSERT, template);
     }
 
