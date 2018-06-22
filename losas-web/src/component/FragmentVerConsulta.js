@@ -225,7 +225,10 @@ class FragmentVerConsulta extends React.Component {
                                             </Typography>
                                         </Grid>
                                     </Grid>
+                                    {consulta.parametro.evaluacionLosa.valoresInicial.length > 0
+                                    &&
                                     <Grid container spacing={0}>
+
                                         <Grid item xs={12} className={classes.columnaTitulo}>
                                             <Typography variant="body2" gutterBottom>
                                                 {CAMPO_EVALUACION_INICIAL}
@@ -239,78 +242,87 @@ class FragmentVerConsulta extends React.Component {
                                             )}
                                         </Grid>
                                     </Grid>
+                                    }
+                                    {consulta.parametro.evaluacionesFenomenoPatologico.length > 0
+                                    &&
                                     <Grid container spacing={0}>
                                         <Grid item xs={12} className={classes.columnaTitulo}>
                                             <Typography variant="body2" gutterBottom>
                                                 {CAMPO_FENOMENOS_PATOLOGICO}
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={12} >
+                                        <Grid item xs={12}>
                                             <Grid container spacing={0}>
-                                            {consulta.parametro.evaluacionesFenomenoPatologico.map((elem, index) =>
-                                                <React.Fragment key={index}>
-                                                    <Grid item xs={12} lg={6} className={classes.rootChip}>
-                                                        <Chip key={index} label={elem.valor.descripcion}
-                                                              className={classNames(classes.chip, elem.cumpleNorma ? classes.chipValido : classes.chipInvalido)}
-                                                        />
-                                                    </Grid>
-                                                    <Grid item xs={12} lg={6} className={classes.rootChip}>
-                                                        <Typography variant="body1" gutterBottom className={classes.textoChip}>
-                                                            {elem.ubicacion.descripcion}
-                                                        </Typography>
-                                                    </Grid>
-                                                </React.Fragment>
-                                            )}
+                                                {consulta.parametro.evaluacionesFenomenoPatologico.map((elem, index) =>
+                                                    <React.Fragment key={index}>
+                                                        <Grid item xs={12} lg={6} className={classes.rootChip}>
+                                                            <Chip key={index} label={elem.valor.descripcion}
+                                                                  className={classNames(classes.chip, elem.cumpleNorma ? classes.chipValido : classes.chipInvalido)}
+                                                            />
+                                                        </Grid>
+                                                        <Grid item xs={12} lg={6} className={classes.rootChip}>
+                                                            <Typography variant="body1" gutterBottom className={classes.textoChip}>
+                                                                {elem.ubicacion.descripcion}
+                                                            </Typography>
+                                                        </Grid>
+                                                    </React.Fragment>
+                                                )}
                                             </Grid>
                                         </Grid>
                                     </Grid>
+                                    }
+                                    {consulta.parametro.evaluacionesNoDestructiva.length > 0
+                                    &&
                                     <Grid container spacing={0}>
                                         <Grid item xs={12} className={classes.columnaTitulo}>
                                             <Typography variant="body2" gutterBottom>
                                                 {CAMPO_EVALUACION_NO_DESTRUCTIVA}
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={12} >
+                                        <Grid item xs={12}>
                                             <Grid container spacing={0}>
-                                            {consulta.parametro.evaluacionesNoDestructiva.map((elem, index) =>
-                                                <React.Fragment key={index}>
-                                                    <Grid item xs={12} lg={6} className={classes.rootChip}>
-                                                        <Chip key={index} label={elem.valor.descripcion}
-                                                              className={classNames(classes.chip, elem.cumpleNorma ? classes.chipValido : classes.chipInvalido)}
-                                                        />
-                                                    </Grid>
-                                                    <Grid item xs={12} lg={6} className={classes.rootChip}>
-                                                        <Typography variant="body1" gutterBottom className={classes.textoChip}>
-                                                            {elem.colorEvaluacion.descripcion}
-                                                        </Typography>
-                                                    </Grid>
-                                                </React.Fragment>
-                                            )}
+                                                {consulta.parametro.evaluacionesNoDestructiva.map((elem, index) =>
+                                                    <React.Fragment key={index}>
+                                                        <Grid item xs={12} lg={6} className={classes.rootChip}>
+                                                            <Chip key={index} label={elem.valor.descripcion}
+                                                                  className={classNames(classes.chip, elem.cumpleNorma ? classes.chipValido : classes.chipInvalido)}
+                                                            />
+                                                        </Grid>
+                                                        <Grid item xs={12} lg={6} className={classes.rootChip}>
+                                                            <Typography variant="body1" gutterBottom className={classes.textoChip}>
+                                                                {elem.colorEvaluacion.descripcion}
+                                                            </Typography>
+                                                        </Grid>
+                                                    </React.Fragment>
+                                                )}
                                             </Grid>
                                         </Grid>
                                     </Grid>
+                                    }
+                                    {consulta.parametro.evaluacionesDestructiva.length > 0
+                                    &&
                                     <Grid container spacing={0}>
                                         <Grid item xs={12} className={classes.columnaTitulo}>
                                             <Typography variant="body2" gutterBottom>
                                                 {CAMPO_EVALUACION_DESTRUCTIVA}
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={12} >
+                                        <Grid item xs={12}>
                                             <Grid container spacing={0}>
-                                            {consulta.parametro.evaluacionesDestructiva.map((elem, index) =>
-                                                <React.Fragment key={index}>
-                                                    <Grid item xs={12} lg={6} className={classes.rootChip}>
-                                                        <Chip key={index}
-                                                              label={elem.valor.descripcion}
-                                                              className={classNames(classes.chip, elem.cumpleNorma ? classes.chipValido : classes.chipInvalido)}
-                                                        />
-                                                    </Grid>
-                                                </React.Fragment>
-                                            )}
+                                                {consulta.parametro.evaluacionesDestructiva.map((elem, index) =>
+                                                    <React.Fragment key={index}>
+                                                        <Grid item xs={12} lg={6} className={classes.rootChip}>
+                                                            <Chip key={index}
+                                                                  label={elem.valor.descripcion}
+                                                                  className={classNames(classes.chip, elem.cumpleNorma ? classes.chipValido : classes.chipInvalido)}
+                                                            />
+                                                        </Grid>
+                                                    </React.Fragment>
+                                                )}
                                             </Grid>
                                         </Grid>
                                     </Grid>
-
+                                    }
                                 </CardContent>
                                 <Divider />
                                 <CardActions>

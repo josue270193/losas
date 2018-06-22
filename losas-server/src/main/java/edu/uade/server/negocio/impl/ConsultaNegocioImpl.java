@@ -4,18 +4,16 @@ import edu.uade.server.dao.ConsultaDao;
 import edu.uade.server.dto.*;
 import edu.uade.server.entity.*;
 import edu.uade.server.mapper.ConsultaMapper;
+import edu.uade.server.mapper.RouterCustom;
 import edu.uade.server.negocio.ConsultaNegocio;
 import net.sf.clipsrules.jni.Environment;
-import net.sf.clipsrules.jni.MultifieldValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,7 +50,11 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
 //            Realizo la consulta en CLIPS
             List<String> listaAssert = ConsultaMapper.mapConsulta(consulta);
 
+            RouterCustom router = new RouterCustom("routerCustom");
+
             clips = new Environment();
+            clips.addRouter(router);
+
             for (String path : pathClip){
                 final Resource fileResource = resourceLoader.getResource(CLASSPATH + path);
                 clips.load(fileResource.getFile().getAbsolutePath());
@@ -63,13 +65,7 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
             }
 
             clips.run();
-
-            String evalStr = "(find-all-facts ((?f output)) TRUE)";
-            MultifieldValue pv = (MultifieldValue) clips.eval(evalStr);
-
-
-            consulta = evaluarResultado(consulta, clips);
-            clips.destroy();
+            consulta = evaluarResultado(consulta, clips, router);
 
 //            Guardar en BD
             consulta = guardarConsulta(consulta);
@@ -80,31 +76,15 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
         return consulta;
     }
 
-    private ConsultaDto evaluarResultado(ConsultaDto consulta, Environment clips) {
-        String resultado = clips.getInputBuffer();
-        //clips.watch()
-//        String evalStr;
-//        String messageStr = "<html><p style=\"font-size:95%\">";
-//
-//        evalStr = "(find-all-facts ((?f technique)) TRUE)";
-//
-//        MultifieldValue mv = (MultifieldValue) clips.eval(evalStr);
-//        int tNum = mv.size();
-//
-//        for (int i = 1; i <= tNum; i++)
-//        {
-//            evalStr = "(find-fact ((?f technique-employed)) " +
-//                    "(eq ?f:priority " + i + "))";
-//
-//            mv = (MultifieldValue) clips.eval(evalStr);
-//            if (mv.size() == 0) continue;
-//
-//            FactAddressValue fv = (FactAddressValue) mv.get(0);
-//
-//            messageStr = messageStr + ((NumberValue) fv.getFactSlot("priority")).intValue() + ". " +
-//                    ((LexemeValue) fv.getFactSlot("reason")).lexemeValue() + "<br>";
-//        }
-//        JOptionPane.showMessageDialog(jfrm,messageStr,sudokuResources.getString("SolutionTechniques"),JOptionPane.PLAIN_MESSAGE);
+    private ConsultaDto evaluarResultado(ConsultaDto consulta, Environment clips, RouterCustom router) {
+
+        // AGREGOS LAS REGLAS APLICADAS
+        List<String> reglasAplicadas = router.getBuffer();
+        reglasAplicadas = reglasAplicadas.stream().filter(linea -> !linea.trim().isEmpty()).collect(Collectors.toList());
+        consulta.setReglasAplicadas(reglasAplicadas);
+
+        // TODO OBTENER EL RESULTADO
+//        String resultado = clips.getInputBuffer();
 
         return consulta;
     }
@@ -114,6 +94,8 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
 
         entity.setParametro(crearEntityConsultaParametro(consultaDto.getParametro()));
         entity.setFechaCreacion(consultaDto.getFechaCreacion());
+//        entity.setDiagnostico(null);
+        entity.setReglasAplicadas(consultaDto.getReglasAplicadas().stream().map(Object::toString).collect(Collectors.joining(",")));
 
         entity = consultaDao.save(entity);
 
