@@ -6,17 +6,24 @@ import edu.uade.server.entity.*;
 import edu.uade.server.mapper.ConsultaMapper;
 import edu.uade.server.negocio.ConsultaNegocio;
 import net.sf.clipsrules.jni.Environment;
+import net.sf.clipsrules.jni.MultifieldValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class ConsultaNegocioImpl implements ConsultaNegocio {
 
+    private static final String CLASSPATH = "classpath:";
+    private final ResourceLoader resourceLoader;
     private final ConsultaDao consultaDao;
     private Environment clips;
 
@@ -24,7 +31,8 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
     private String[] pathClip;
 
     @Autowired
-    public ConsultaNegocioImpl(@Value("${path.lib}") String pathLib, ConsultaDao consultaDao) {
+    public ConsultaNegocioImpl(@Value("${path.lib}") String pathLib, ConsultaDao consultaDao, ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
         this.consultaDao = consultaDao;
 
         System.setProperty("java.library.path", pathLib);
@@ -46,15 +54,21 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
 
             clips = new Environment();
             for (String path : pathClip){
-                clips.loadFromResource(path);
+                final Resource fileResource = resourceLoader.getResource(CLASSPATH + path);
+                clips.load(fileResource.getFile().getAbsolutePath());
             }
             clips.reset();
             for (String eval : listaAssert){
                 clips.eval(eval);
             }
+
             clips.run();
 
-            String resultado = clips.getInputBuffer();
+            String evalStr = "(find-all-facts ((?f output)) TRUE)";
+            MultifieldValue pv = (MultifieldValue) clips.eval(evalStr);
+
+
+            consulta = evaluarResultado(consulta, clips);
             clips.destroy();
 
 //            Guardar en BD
@@ -63,6 +77,35 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
         } catch (Exception e){
             e.printStackTrace();
         }
+        return consulta;
+    }
+
+    private ConsultaDto evaluarResultado(ConsultaDto consulta, Environment clips) {
+        String resultado = clips.getInputBuffer();
+        //clips.watch()
+//        String evalStr;
+//        String messageStr = "<html><p style=\"font-size:95%\">";
+//
+//        evalStr = "(find-all-facts ((?f technique)) TRUE)";
+//
+//        MultifieldValue mv = (MultifieldValue) clips.eval(evalStr);
+//        int tNum = mv.size();
+//
+//        for (int i = 1; i <= tNum; i++)
+//        {
+//            evalStr = "(find-fact ((?f technique-employed)) " +
+//                    "(eq ?f:priority " + i + "))";
+//
+//            mv = (MultifieldValue) clips.eval(evalStr);
+//            if (mv.size() == 0) continue;
+//
+//            FactAddressValue fv = (FactAddressValue) mv.get(0);
+//
+//            messageStr = messageStr + ((NumberValue) fv.getFactSlot("priority")).intValue() + ". " +
+//                    ((LexemeValue) fv.getFactSlot("reason")).lexemeValue() + "<br>";
+//        }
+//        JOptionPane.showMessageDialog(jfrm,messageStr,sudokuResources.getString("SolutionTechniques"),JOptionPane.PLAIN_MESSAGE);
+
         return consulta;
     }
 

@@ -73,7 +73,10 @@ public class ConsultaMapper {
     private static String mapFenomenoPatologico(List<EvaluacionFenomenoPatologicoDto> dtos) {
         StringBuilder slots = new StringBuilder();
 
-
+        for (EvaluacionFenomenoPatologicoDto dto : dtos){
+            slots.append(String.format(BUILD_SLOT, dto.getValor().getValorInferencia(), dto.getUbicacion().getValorInferencia()));
+            slots.append(ESPACIO);
+        }
 
         String template = String.format(BUILD_TEMPLATE, TEMPLATE_FENOMENO_PATOLOGICO, slots);
         return String.format(BUILD_TEMPLATE, ASSERT, template);

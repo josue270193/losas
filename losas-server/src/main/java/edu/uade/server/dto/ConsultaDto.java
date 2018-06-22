@@ -3,13 +3,11 @@ package edu.uade.server.dto;
 import edu.uade.server.entity.ConsultaEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class ConsultaDto {
 
     private Long codigo;
@@ -27,5 +25,4 @@ public class ConsultaDto {
             setFechaCreacion(entity.getFechaCreacion());
         }
     }
-
 }

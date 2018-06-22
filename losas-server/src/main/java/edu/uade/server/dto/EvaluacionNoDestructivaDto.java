@@ -4,11 +4,9 @@ import edu.uade.server.dto.enumerado.ColorEvaluacionEnum;
 import edu.uade.server.entity.EvaluacionNoDestructivaEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class EvaluacionNoDestructivaDto {
 
     private Long codigo;

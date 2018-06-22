@@ -4,7 +4,6 @@ import edu.uade.server.dto.enumerado.RelacionFechaEnum;
 import edu.uade.server.entity.EvaluacionLosaEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class EvaluacionLosaDto {
 
     private Long codigo;
@@ -30,5 +28,4 @@ public class EvaluacionLosaDto {
             );
         }
     }
-
 }
