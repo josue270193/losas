@@ -84,7 +84,8 @@ class ConsultaPaso2 extends React.Component {
                 dataNew.push({
                     codigo: null,
                     valor: {
-                        codigo: item
+                        codigo: item,
+                        valorInferencia: this.state.opcionesFenomenos.find(i => i.codigo === item).valorInferencia
                     },
                     ubicacion: {
                         valorInferencia: VALOR_UBICACION_POR_DEFECTO
@@ -108,7 +109,8 @@ class ConsultaPaso2 extends React.Component {
                 dataNew.push({
                     codigo: null,
                     valor: {
-                        codigo: item
+                        codigo: item,
+                        valorInferencia: this.state.opcionesNoDestructiva.find(i => i.codigo === item).valorInferencia
                     },
                     colorEvaluacion: {
                         valorInferencia: VALOR_UBICACION_POR_DEFECTO
