@@ -39,36 +39,6 @@ public class ConsultaControlador {
 
     @GetMapping(value = "/get-all")
     public List<ConsultaDto> getConsulta() {
-        ConsultaDto consultaDto = new ConsultaDto();
-        ConsultaParametroDto consultaParametroDto = new ConsultaParametroDto();
-        EvaluacionDestructivaDto evaluacionDestructivaDto = new EvaluacionDestructivaDto();
-        evaluacionDestructivaDto.setCodigo(1l);
-        evaluacionDestructivaDto.setCumpleNorma(true);
-        EvaluacionDestructivaDto evaluacionDestructivaDto2 = new EvaluacionDestructivaDto();
-        evaluacionDestructivaDto2.setCodigo(1l);
-        evaluacionDestructivaDto2.setCumpleNorma(true);
-
-
-        ValorEvaluacionDestructivaDto valor = new ValorEvaluacionDestructivaDto();
-        valor.setCodigo(1l);
-        valor.setDescripcion("papa");
-        valor.setValorInferencia("pepa");
-        evaluacionDestructivaDto.setValor(valor);
-
-        ValorEvaluacionDestructivaDto valor2 = new ValorEvaluacionDestructivaDto();
-        valor2.setCodigo(1l);
-        valor2.setDescripcion("papa");
-        valor2.setValorInferencia("pupa");
-        evaluacionDestructivaDto2.setValor(valor2);
-
-        List<EvaluacionDestructivaDto> evaluaciones = new ArrayList<EvaluacionDestructivaDto>();
-        evaluaciones.add(evaluacionDestructivaDto);
-        evaluaciones.add(evaluacionDestructivaDto2);
-
-        consultaParametroDto.setEvaluacionesDestructiva(evaluaciones);
-        consultaDto.setParametro(consultaParametroDto);
-
-        System.out.println(ConsultaMapper.mapConsulta(consultaDto));
         return consultaService.getAll();
     }
 
