@@ -38,4 +38,9 @@ public class ConsultaEntity {
     @Getter
     @Setter
     private Date fechaCreacion;
+
+    @Column(name = "reglas_aplicadas")
+    @Getter
+    @Setter
+    private String reglasAplicadas;
 }

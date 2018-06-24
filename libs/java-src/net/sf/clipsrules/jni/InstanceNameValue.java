@@ -1,6 +1,6 @@
 package net.sf.clipsrules.jni;
 
-public class InstanceNameValue extends InstanceValue
+public class InstanceNameValue extends LexemeValue
   {
    /**********************/
    /* InstanceNameValue: */
@@ -19,12 +19,13 @@ public class InstanceNameValue extends InstanceValue
       super(value);
      }
      
-   /**********************/
-   /* instanceNameValue: */
-   /**********************/
-   public String instanceNameValue()
-     {
-      return (String) getValue();
+   /***************/
+   /* getInstance */
+   /***************/
+   public InstanceAddressValue getInstance(
+     Environment theEnv)
+     {            
+      return theEnv.findInstanceByName(getValue());
      }
    
    /*************/
@@ -35,4 +36,13 @@ public class InstanceNameValue extends InstanceValue
      {        
       return "[" + super.toString() + "]";
      }
+
+   @Override
+   public CLIPSType getCLIPSType()
+     { return CLIPSType.INSTANCE_NAME; }
+     
+   @Override
+   public boolean isInstanceName()
+     { return true; }
+
   }

@@ -27,4 +27,13 @@ public class IntegerValue extends NumberValue
      {
       super(value);
      }
+
+   @Override
+   public CLIPSType getCLIPSType()
+     { return CLIPSType.INTEGER; }
+     
+   @Override
+   public boolean isInteger()
+     { return true; }
+
   }

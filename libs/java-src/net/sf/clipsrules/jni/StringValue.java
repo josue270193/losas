@@ -18,14 +18,6 @@ public class StringValue extends LexemeValue
      {
       super(value);
      }
-     
-   /****************/
-   /* stringValue: */
-   /****************/
-   public String stringValue()
-     {
-      return (String) getValue();
-     }
 
    /*************/
    /* toString: */
@@ -35,5 +27,13 @@ public class StringValue extends LexemeValue
      {        
       return "\"" + super.toString() + "\"";
      }
+
+   @Override
+   public CLIPSType getCLIPSType()
+     { return CLIPSType.STRING; }
+    
+   @Override
+   public boolean isString()
+     { return true; }
 
   }

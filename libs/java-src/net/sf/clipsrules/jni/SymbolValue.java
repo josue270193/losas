@@ -19,11 +19,12 @@ public class SymbolValue extends LexemeValue
       super(value);
      }
 
-   /****************/
-   /* symbolValue: */
-   /****************/
-   public String symbolValue() throws Exception
-     {
-      return (String) getValue();
-     }
+   @Override
+   public CLIPSType getCLIPSType()
+     { return CLIPSType.SYMBOL; }
+  
+   @Override
+   public boolean isSymbol()
+     { return true; }
+
   }

@@ -291,7 +291,15 @@ class WineDemo implements ActionListener
       
       clips = new Environment();
       
-      clips.loadFromResource("/net/sf/clipsrules/jni/examples/wine/resources/wine.clp");
+      try
+        {
+         clips.loadFromResource("/net/sf/clipsrules/jni/examples/wine/resources/wine.clp");
+        }
+      catch (Exception e)
+        {
+         e.printStackTrace();
+         System.exit(1);
+        }
       
       try
         { runWine(); }
@@ -443,7 +451,10 @@ class WineDemo implements ActionListener
            {
             public void run()
               {
-               clips.run();
+               try
+                 { clips.run(); }
+               catch (CLIPSException e)
+                 { e.printStackTrace(); }
                
                SwingUtilities.invokeLater(
                   new Runnable()
@@ -473,21 +484,21 @@ class WineDemo implements ActionListener
      { 
       String evalStr = "(WINES::get-wine-list)";
                                        
-      MultifieldValue pv = (MultifieldValue) clips.eval(evalStr);
+      MultifieldValue mv = (MultifieldValue) clips.eval(evalStr);
                
       wineList.setRowCount(0);
-      
-      for (int i = 0; i < pv.size(); i++) 
-        {
-         FactAddressValue fv = (FactAddressValue) pv.get(i);
 
-         int certainty = ((NumberValue) fv.getFactSlot("certainty")).intValue(); 
+      for (PrimitiveValue pv : mv)
+        {  
+         FactAddressValue fv = (FactAddressValue) pv;
          
-         String wineName = ((LexemeValue) fv.getFactSlot("value")).lexemeValue();
+         int certainty = ((NumberValue) fv.getSlotValue("certainty")).intValue(); 
+         
+         String wineName = ((LexemeValue) fv.getSlotValue("value")).getValue();
                   
          wineList.addRow(new Object[] { wineName, new Integer(certainty) });
-        }  
-        
+        }
+
       jfrm.pack();
       
       executionThread = null;

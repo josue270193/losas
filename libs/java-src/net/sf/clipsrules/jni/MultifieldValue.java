@@ -4,32 +4,64 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class MultifieldValue extends PrimitiveValue
+public class MultifieldValue extends PrimitiveValue implements Iterable<PrimitiveValue>
   {
+   private List<PrimitiveValue> value;
+   
    /********************/
    /* MultifieldValue: */
    /********************/
    public MultifieldValue()
      {
-      super(new ArrayList());
+      this.value = new ArrayList<PrimitiveValue>();
      }
 
    /********************/
    /* MultifieldValue: */
    /********************/
    public MultifieldValue(
-     List value)
+     List<PrimitiveValue> value)
      {
-      super(value);
+      this.value = value;
+     }
+
+   /*************/
+   /* getValue: */
+   /*************/
+   @Override
+   public List<PrimitiveValue> getValue()
+     {
+      return this.value;
+     }
+
+   @Override
+   public CLIPSType getCLIPSType()
+     { return CLIPSType.MULTIFIELD; }
+     
+   /*************/
+   /* hashCode: */
+   /*************/
+   @Override
+   public int hashCode()
+     {
+      if (value == null) return 0;
+      return value.hashCode();
      }
      
-   /********************/
-   /* multifieldValue: */
-   /********************/
-   public List multifieldValue()
-     {
-      return (List) getValue();
-     }
+   /***********/
+   /* equals: */
+   /***********/
+	@Override
+	public boolean equals(Object obj) 
+	  {
+	   if (this == obj) return true;
+	   if (obj == null) return false;
+	   if (this.getClass() != obj.getClass()) return false;
+	   
+	   MultifieldValue mv = (MultifieldValue) obj;
+	   if (this.value == null) return (mv.value == null);
+	   return this.value.equals(mv.value);
+      }
 
    /********/
    /* get: */
@@ -37,9 +69,9 @@ public class MultifieldValue extends PrimitiveValue
    public PrimitiveValue get(
      int index)
      {
-      List theList = (List) getValue();
+      List<PrimitiveValue> theList = getValue();
       
-      return (PrimitiveValue) theList.get(index);
+      return theList.get(index);
      }
      
    /*********/
@@ -47,24 +79,21 @@ public class MultifieldValue extends PrimitiveValue
    /*********/
    public int size()
      {
-      final List theList = (List) getValue();
+      final List<PrimitiveValue> theList = getValue();
       
       return theList.size();
      }
-
+     
    /***********/
    /* retain: */
    /***********/
    @Override
    public void retain()
      {
-      final List theList = (List) getValue();
+      final List<PrimitiveValue> theList = getValue();
       
-      for (Iterator itr = theList.iterator(); itr.hasNext(); ) 
-        {
-         PrimitiveValue pv = (PrimitiveValue) itr.next();
-         pv.retain();
-        }            
+      for (PrimitiveValue theValue : theList)
+        { theValue.retain(); }
      }
 
    /************/
@@ -73,13 +102,10 @@ public class MultifieldValue extends PrimitiveValue
    @Override
    public void release()
      {
-      final List theList = (List) getValue();
+      final List<PrimitiveValue> theList = getValue();
       
-      for (Iterator itr = theList.iterator(); itr.hasNext(); ) 
-        {
-         PrimitiveValue pv = (PrimitiveValue) itr.next();
-         pv.release();
-        }            
+      for (PrimitiveValue theValue : theList)
+        { theValue.release(); }
      }
      
    /*************/
@@ -88,24 +114,37 @@ public class MultifieldValue extends PrimitiveValue
    @Override
    public String toString()
      {  
-      final List theList = (List) getValue();
+      final List<PrimitiveValue> theList = getValue();
       boolean first = true;
       
       String theString = "(";
       
-      for (Iterator itr = theList.iterator(); itr.hasNext(); ) 
+      for (PrimitiveValue theValue : theList)
         {
          if (! first)
-          { theString = theString + " " + itr.next(); }
+          { theString = theString + " " + theValue; }
          else
           { 
-           theString = theString + itr.next(); 
+           theString = theString + theValue; 
            first = false;
           }
         }      
-        
+                
       theString = theString + ")";
       
       return theString;
      }
+
+   /************/
+   /* iterator */
+   /************/ 
+   public Iterator<PrimitiveValue> iterator() 
+     {
+      return getValue().iterator();
+     }
+
+   @Override
+   public boolean isMultifield()
+     { return true; }
+
   }

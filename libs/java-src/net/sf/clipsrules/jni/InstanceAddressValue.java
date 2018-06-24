@@ -1,9 +1,10 @@
 package net.sf.clipsrules.jni;
 
-public class InstanceAddressValue extends InstanceValue
+public class InstanceAddressValue extends PrimitiveValue
   {
    private Environment owner;
-
+   private Long value;
+   
    /*************************/
    /* InstanceAddressValue: */
    /*************************/
@@ -11,10 +12,22 @@ public class InstanceAddressValue extends InstanceValue
      long value,
      Environment env)
      {
-      super(new Long(value));
-      
+      this.value = value;      
       owner = env;
      }
+
+   /*************/
+   /* getValue: */
+   /*************/
+   @Override
+   public Long getValue()
+     {
+      return this.value;
+     }
+
+   @Override
+   public CLIPSType getCLIPSType()
+     { return CLIPSType.INSTANCE_ADDRESS; }
 
    /*******************/
    /* getEnvironment: */
@@ -26,12 +39,12 @@ public class InstanceAddressValue extends InstanceValue
    /* getInstanceAddress: */
    /***********************/     
    public long getInstanceAddress()
-     { return ((Long) getValue()).longValue(); }
+     { return getValue().longValue(); }
 
-   /******************/
-   /* directGetSlot: */
-   /******************/     
-   public PrimitiveValue directGetSlot(
+   /*****************/
+   /* getSlotValue: */
+   /*****************/     
+   public PrimitiveValue getSlotValue(
      String slotName)
      { return Environment.directGetSlot(this,slotName); }
 
@@ -56,7 +69,7 @@ public class InstanceAddressValue extends InstanceValue
    @Override
    public void retain()
      {
-      owner.incrementInstanceCount(this);
+      owner.retainInstance(this);
      }
 
    /************/
@@ -65,6 +78,11 @@ public class InstanceAddressValue extends InstanceValue
    @Override
    public void release()
      {
-      owner.decrementInstanceCount(this);
+      owner.releaseInstance(this);
      }
+   
+   @Override
+   public boolean isInstanceAddress()
+     { return true; }
+
   }

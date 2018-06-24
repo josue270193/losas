@@ -4,10 +4,13 @@ import edu.uade.server.dao.ConsultaDao;
 import edu.uade.server.dto.*;
 import edu.uade.server.entity.*;
 import edu.uade.server.mapper.ConsultaMapper;
+import edu.uade.server.mapper.RouterCustom;
 import edu.uade.server.negocio.ConsultaNegocio;
 import net.sf.clipsrules.jni.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -17,6 +20,8 @@ import java.util.stream.Collectors;
 @Service
 public class ConsultaNegocioImpl implements ConsultaNegocio {
 
+    private static final String CLASSPATH = "classpath:";
+    private final ResourceLoader resourceLoader;
     private final ConsultaDao consultaDao;
     private Environment clips;
 
@@ -24,7 +29,8 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
     private String[] pathClip;
 
     @Autowired
-    public ConsultaNegocioImpl(@Value("${path.lib}") String pathLib, ConsultaDao consultaDao) {
+    public ConsultaNegocioImpl(@Value("${path.lib}") String pathLib, ConsultaDao consultaDao, ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
         this.consultaDao = consultaDao;
 
         System.setProperty("java.library.path", pathLib);
@@ -44,18 +50,22 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
 //            Realizo la consulta en CLIPS
             List<String> listaAssert = ConsultaMapper.mapConsulta(consulta);
 
+            RouterCustom router = new RouterCustom("routerCustom");
+
             clips = new Environment();
+            clips.addRouter(router);
+
             for (String path : pathClip){
-                clips.loadFromResource(path);
+                final Resource fileResource = resourceLoader.getResource(CLASSPATH + path);
+                clips.load(fileResource.getFile().getAbsolutePath());
             }
             clips.reset();
             for (String eval : listaAssert){
                 clips.eval(eval);
             }
-            clips.run();
 
-            String resultado = clips.getInputBuffer();
-            clips.destroy();
+            clips.run();
+            consulta = evaluarResultado(consulta, clips, router);
 
 //            Guardar en BD
             consulta = guardarConsulta(consulta);
@@ -66,11 +76,26 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
         return consulta;
     }
 
+    private ConsultaDto evaluarResultado(ConsultaDto consulta, Environment clips, RouterCustom router) {
+
+        // AGREGOS LAS REGLAS APLICADAS
+        List<String> reglasAplicadas = router.getBuffer();
+        reglasAplicadas = reglasAplicadas.stream().filter(linea -> !linea.trim().isEmpty()).collect(Collectors.toList());
+        consulta.setReglasAplicadas(reglasAplicadas);
+
+        // TODO OBTENER EL RESULTADO
+//        String resultado = clips.getInputBuffer();
+
+        return consulta;
+    }
+
     private ConsultaDto guardarConsulta(ConsultaDto consultaDto) {
         ConsultaEntity entity = new ConsultaEntity();
 
         entity.setParametro(crearEntityConsultaParametro(consultaDto.getParametro()));
         entity.setFechaCreacion(consultaDto.getFechaCreacion());
+//        entity.setDiagnostico(null);
+        entity.setReglasAplicadas(consultaDto.getReglasAplicadas().stream().map(Object::toString).collect(Collectors.joining(",")));
 
         entity = consultaDao.save(entity);
 

@@ -3,7 +3,6 @@ package edu.uade.server.dto;
 import edu.uade.server.entity.ConsultaParametroEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class ConsultaParametroDto {
 
     private Long codigo;
@@ -41,5 +39,4 @@ public class ConsultaParametroDto {
             );
         }
     }
-
 }

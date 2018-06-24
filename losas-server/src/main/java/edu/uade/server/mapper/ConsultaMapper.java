@@ -96,20 +96,14 @@ public class ConsultaMapper {
     }
 
     private static String mapFenomenoPatologico(List<EvaluacionFenomenoPatologicoDto> dtos) {
-        List<String> multislot = new ArrayList<String>();
+        StringBuilder slots = new StringBuilder();
 
-        for (EvaluacionFenomenoPatologicoDto eval : dtos) {
-            StringBuilder slots = new StringBuilder();
-            ValorFenomenoPatologicoDto valor = eval.getValor();
-            slots.append("(");
-            slots.append(valor.getDescripcion());
-            slots.append(" ");
-            slots.append(valor.getValorInferencia());
-            slots.append(")");
-            multislot.add(slots.toString());
+        for (EvaluacionFenomenoPatologicoDto dto : dtos){
+            slots.append(String.format(BUILD_SLOT, dto.getValor().getValorInferencia(), dto.getUbicacion().getValorInferencia()));
+            slots.append(ESPACIO);
         }
 
-        String template = String.format(BUILD_TEMPLATE, TEMPLATE_FENOMENO_PATOLOGICO, String.join(" ", multislot));
+        String template = String.format(BUILD_TEMPLATE, TEMPLATE_FENOMENO_PATOLOGICO, slots);
         return String.format(BUILD_TEMPLATE, ASSERT, template);
     }
 

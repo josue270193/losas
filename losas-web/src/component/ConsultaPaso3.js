@@ -49,7 +49,8 @@ class ConsultaPaso3 extends React.Component {
                 dataNew.push({
                     codigo: null,
                     valor: {
-                        codigo: item
+                        codigo: item,
+                        valorInferencia: this.state.opcionesDestructiva.find(i => i.codigo === item).valorInferencia
                     },
                     cumpleNorma: false
                 });

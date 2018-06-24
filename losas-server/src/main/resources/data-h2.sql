@@ -8,19 +8,19 @@ INSERT INTO VALORES_INICIAL(codigo, descripcion, valor_inferencia) VALUES (6, 'N
 INSERT INTO VALORES_INICIAL(codigo, descripcion, valor_inferencia) VALUES (7, 'Uso indebido', 'uso-indebido');
 INSERT INTO VALORES_INICIAL(codigo, descripcion, valor_inferencia) VALUES (8, 'Variación de Temperatura interna y externa', 'variacion-temperatura-interna-externa');
 /* VALORES_DIAGNOSTICO */
-INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (1, 'Error de Diseño', '');
-INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (2, 'Error de Construcción', '');
-INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (3, 'Sobrecarga Excesiva', '');
-INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (4, 'Retracción Hidráulica', '');
-INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (5, 'Retracción Plástica', '');
-INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (6, 'Corrosión', '');
-INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (7, 'Congelamiento / Deshielo', '');
-INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (8, 'Reactividad de los agregados al ataque de Álcali-Carbonato', '');
-INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (9, 'Reactividad de los agregados al ataque de Álcali-Sílice', '');
-INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (10, 'Reactividad de los agregado al ataque de Sulfatos', '');
-INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (11, 'Reactividad de los agregados al ataque de Cloruros', '');
-INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (12, 'Esfuerzo Térmico','');
-INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (13, 'Ausencia de Acero de Refuerzo','');
+INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (1, 'Error de Diseño', 'error de diseno');
+INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (2, 'Error de Construcción', 'error de construccion');
+INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (3, 'Sobrecarga Excesiva', 'sobrecarga excesiva');
+INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (4, 'Retracción Hidráulica', 'retracción hidraulica');
+INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (5, 'Retracción Plástica', 'retraccion plastica');
+INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (6, 'Corrosión', 'corrosion');
+INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (7, 'Congelamiento / Deshielo', 'congelamiento o deshielo');
+INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (8, 'Reactividad de los agregados al ataque de Álcali-Carbonato', 'reactividad de agregados al ataque de alcali-carbonato');
+INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (9, 'Reactividad de los agregados al ataque de Álcali-Sílice', 'reactividad de agregados al ataque de alcali-silice');
+INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (10, 'Reactividad de los agregado al ataque de Sulfatos', 'reactividad de agregados al ataque de sulfatos');
+INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (11, 'Reactividad de los agregados al ataque de Cloruros', 'reactividad de agregados al ataque de cloruros');
+INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (12, 'Esfuerzo Térmico','esfuerzo termico');
+INSERT INTO VALORES_DIAGNOSTICO(codigo, descripcion, valor_inferencia) VALUES (13, 'Ausencia de Acero de Refuerzo','ausencia de acero de refuerzo');
 /* VALORES_DIAGNOSTICO_POSIBILIDAD */
 INSERT INTO VALORES_DIAGNOSTICO_POSIBILIDAD(codigo, descripcion, valor_inferencia) VALUES (1, 'Directo', '');
 INSERT INTO VALORES_DIAGNOSTICO_POSIBILIDAD(codigo, descripcion, valor_inferencia) VALUES (2, 'Indirecto', '');

@@ -27,4 +27,12 @@ public class FloatValue extends NumberValue
      {
       super(value);
      }
+
+   @Override
+   public CLIPSType getCLIPSType()
+     { return CLIPSType.FLOAT; }
+     
+   @Override
+   public boolean isFloat()
+     { return true; }
   }

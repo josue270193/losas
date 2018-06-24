@@ -2,30 +2,31 @@ package net.sf.clipsrules.jni;
 
 public abstract class NumberValue extends PrimitiveValue 
   {
+   private Number value;
+   
    /****************/
    /* NumberValue: */
    /****************/
-
-  protected NumberValue(Number value) 
+   protected NumberValue(Number value) 
      {
-      super(value);
+      this.value = value;
 	 }
 
-   /****************/
-   /* NumberValue: */
-   /****************/
-	
-   public Number numberValue()
+   /*************/
+   /* getValue: */
+   /*************/
+   @Override
+   public Number getValue()
      {
-      return (Number) getValue();
-     } 
+      return this.value;
+     }
      
    /*************/
    /* intValue: */
    /*************/
    public int intValue()
      {
-      return numberValue().intValue();
+      return value.intValue();
      }
 
    /**************/
@@ -33,7 +34,7 @@ public abstract class NumberValue extends PrimitiveValue
    /**************/
    public long longValue()
      {
-      return numberValue().longValue();
+      return value.longValue();
      }
      
    /***************/
@@ -41,7 +42,7 @@ public abstract class NumberValue extends PrimitiveValue
    /***************/
    public float floatValue()
      {
-      return numberValue().floatValue();
+      return value.floatValue();
      }
 
    /****************/
@@ -49,6 +50,46 @@ public abstract class NumberValue extends PrimitiveValue
    /****************/
    public double doubleValue()
      {
-      return numberValue().doubleValue();
+      return value.doubleValue();
      }
+     
+   /*************/
+   /* toString: */
+   /*************/
+   @Override
+   public String toString()
+     {
+      if (value == null) return null;
+      return value.toString();
+     }
+     
+   /*************/
+   /* hashCode: */
+   /*************/
+   @Override
+   public int hashCode()
+     {
+      if (value == null) return 0;
+      return value.hashCode();
+     }
+     
+   /***********/
+   /* equals: */
+   /***********/
+	@Override
+	public boolean equals(Object obj) 
+	  {
+	   if (this == obj) return true;
+	   if (obj == null) return false;
+	   if (this.getClass() != obj.getClass()) return false;
+	   
+	   NumberValue nv = (NumberValue) obj;
+	   if (this.value == null) return (nv.value == null);
+	   return this.value.equals(nv.value);
+      }
+      
+   @Override
+   public boolean isNumber()
+     { return true; }
+
   }

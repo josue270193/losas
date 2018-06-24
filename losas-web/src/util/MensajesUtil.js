@@ -1,6 +1,7 @@
 import moment from "moment";
 import {obtenerConfiguracionCache} from "../data/DataConfig";
-// import imagen_unknown from "./../assets/unknown.jpg"
+
+import imagen_unknown from "./../assets/unknown.jpg"
 import imagen_desconocido from "./../assets/desconocido.jpg"
 import imagen_titulo from "./../assets/titulo.jpeg"
 
@@ -34,10 +35,84 @@ export const MENSAJE_VALOR_DIAGNOSTICO = (codigo) => {
     let item = obtenerConfiguracionCache()['valoresDiagnostico'].find((i) => i.codigo === codigo);
     return item ? item.descripcion : VALOR_RESPUESTA_POR_DEFECTO;
 };
+export const MENSAJE_DESCRIPCION_CASO = (codigo) => {
+    let itemCodigo = obtenerConfiguracionCache()['valoresDiagnostico'].find((i) => i.codigo === codigo);
+    let elemento = ARRAY_DESCRIPCION.find((item) => item.codigo === itemCodigo);
+    return (elemento && elemento.descripcion) || 'Sin data';
+};
+const ARRAY_DESCRIPCION = [
+    {
+        codigo: "error de diseno",
+        descripcion: "",
+        foto: imagen_unknown
+    },
+    {
+        codigo: "error de construccion",
+        descripcion: "",
+        foto: imagen_unknown
+    },
+    {
+        codigo: "sobrecarga excesiva",
+        descripcion: "",
+        foto: imagen_unknown
+    },
+    {
+        codigo: "retracción hidraulica",
+        descripcion: "",
+        foto: imagen_unknown
+    },
+    {
+        codigo: "retraccion plastica",
+        descripcion: "",
+        foto: imagen_unknown
+    },
+    {
+        codigo: "corrosion",
+        descripcion: "",
+        foto: imagen_unknown
+    },
+    {
+        codigo: "congelamiento o deshielo",
+        descripcion: "",
+        foto: imagen_unknown
+    },
+    {
+        codigo: "reactividad de agregados al ataque de alcali-carbonato",
+        descripcion: "",
+        foto: imagen_unknown
+    },
+    {
+        codigo: "reactividad de agregados al ataque de alcali-silice",
+        descripcion: "",
+        foto: imagen_unknown
+    },
+    {
+        codigo: "reactividad de agregados al ataque de sulfatos",
+        descripcion: "",
+        foto: imagen_unknown
+    },
+    {
+        codigo: "reactividad de agregados al ataque de cloruros",
+        descripcion: "",
+        foto: imagen_unknown
+    },
+    {
+        codigo: "esfuerzo termico",
+        descripcion: "",
+        foto: imagen_unknown
+    },
+    {
+        codigo: "ausencia de acero de refuerzo",
+        descripcion: "",
+        foto: imagen_unknown
+    },
+];
 
 export const IMAGEN_TITULO = imagen_titulo;
 export const IMAGEN_VALOR_DIAGNOSTICO = (codigo) => {
-    return imagen_desconocido;
+    let itemCodigo = obtenerConfiguracionCache()['valoresDiagnostico'].find((i) => i.codigo === codigo);
+    let elemento = ARRAY_DESCRIPCION.find((item) => item.codigo === itemCodigo);
+    return (elemento && elemento.foto) || imagen_desconocido;
 };
 
 export const FORMATO_FECHA_HORA = (fecha) => moment(fecha).format('DD/MM/YYYY HH:MM');
@@ -65,3 +140,4 @@ export const TITULO_VER_CONSULTA = (id) => "Consulta al " + id;
 export const TITULO_VER_CONSULTA_SUBTITULO = (id) => "Codigo Nº " + id;
 export const TITULO_DIAGNOSTICO_RESPUESTA = "Respuesta";
 export const TITULO_DIAGNOSTICO_PARAMETROS = "Parámetros";
+export const TITULO_REGLAS_APLICADAS = "Reglas Aplicadas";
