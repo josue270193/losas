@@ -1,10 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {Button, Card, CardActions, CardContent, Chip, Divider, Grid, GridList, GridListTile, GridListTileBar, Paper, Typography, withStyles} from "@material-ui/core";
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    Chip,
+    Collapse,
+    Divider,
+    Grid,
+    GridList,
+    GridListTile,
+    GridListTileBar,
+    IconButton,
+    Paper,
+    Typography,
+    withStyles
+} from "@material-ui/core";
+import {Link} from "react-router-dom";
 import red from '@material-ui/core/colors/red';
 import green from '@material-ui/core/colors/green';
-
+import InfoIcon from '@material-ui/icons/Info';
 import {
     CAMPO_EVALUACION_DESTRUCTIVA,
     CAMPO_EVALUACION_INICIAL,
@@ -20,12 +37,12 @@ import {
     MENSAJE_VALOR_DIAGNOSTICO,
     TITULO_DIAGNOSTICO_PARAMETROS,
     TITULO_DIAGNOSTICO_RESPUESTA,
+    TITULO_PARAMETRO_NORMA_CIRSOC_201,
     TITULO_REGLAS_APLICADAS,
     TITULO_VER_CONSULTA,
     TITULO_VER_CONSULTA_SUBTITULO
 } from "../util/MensajesUtil";
 import {mostrarMensajeError, requestObtenerConsultaCodigo} from "../data/DataConfig";
-import {Link} from "react-router-dom";
 import {ROUTE_HOME_DIAGNOSTICO} from "../util/URLUtil";
 
 const colorValido = green[600];
@@ -89,6 +106,13 @@ const styles = (theme) => ({
     },
     inlineLeyenda: {
         display: 'inline-block',
+    },
+    cardRespuesta: {
+        marginBottom: theme.spacing.unit
+    },
+    cardReglas: {
+        margin: theme.spacing.unit,
+        padding: theme.spacing.unit
     }
 });
 
@@ -101,7 +125,8 @@ class FragmentVerConsulta extends React.Component {
         this.state = {
             consulta: null,
             codigo: match.params.id,
-            codigoRespuesta: 0
+            codigoRespuesta: 0,
+            muestraReglas: false
         };
     }
 
@@ -136,9 +161,13 @@ class FragmentVerConsulta extends React.Component {
         }
     }
 
+    onClickReglas = () => {
+        this.setState({ muestraReglas: !this.state.muestraReglas });
+    };
+
     render(){
         const { classes } = this.props;
-        const { consulta, codigoRespuesta } = this.state;
+        const { muestraReglas, consulta, codigoRespuesta } = this.state;
         const linkCopiar = (props) => <Link to={{pathname: ROUTE_HOME_DIAGNOSTICO, data: props.data}} {...props} />;
 
         return (
@@ -155,7 +184,7 @@ class FragmentVerConsulta extends React.Component {
                     </Paper>
                     <Grid container spacing={16}>
                         <Grid item xs={12} md={6}>
-                            <Card>
+                            <Card className={classes.cardRespuesta}>
                                 <CardContent>
                                     <div className={classes.gridTitulo}>
                                         <Typography gutterBottom variant="headline" component="h2">
@@ -171,6 +200,11 @@ class FragmentVerConsulta extends React.Component {
                                                     <img className={classes.imagenRespuesta} src={IMAGEN_VALOR_DIAGNOSTICO(codigoRespuesta)} alt={MENSAJE_VALOR_DIAGNOSTICO(codigoRespuesta)}/>
                                                     <GridListTileBar
                                                         title={MENSAJE_VALOR_DIAGNOSTICO(codigoRespuesta)}
+                                                        actionIcon={
+                                                            <IconButton className={classes.icon} onClick={this.onClickReglas}>
+                                                                <InfoIcon />
+                                                            </IconButton>
+                                                        }
                                                     />
                                                 </GridListTile>
                                             </GridList>
@@ -182,8 +216,8 @@ class FragmentVerConsulta extends React.Component {
                                     </Grid>
                                 </CardContent>
                             </Card>
-                            <Card>
-                                <CardContent>
+                            <Collapse in={muestraReglas}>
+                                <Paper elevation={4} className={classes.cardReglas}>
                                     <div className={classes.gridTitulo}>
                                         <Typography gutterBottom variant="headline" component="h2">
                                             {TITULO_REGLAS_APLICADAS}
@@ -202,8 +236,8 @@ class FragmentVerConsulta extends React.Component {
                                             );
                                         })}
                                     </Grid>
-                                </CardContent>
-                            </Card>
+                                </Paper>
+                            </Collapse>
                         </Grid>
                         <Grid item xs={12} md={6}>
                             <Card >
@@ -215,21 +249,24 @@ class FragmentVerConsulta extends React.Component {
                                             </Typography>
                                         </Grid>
                                         <Grid item xs lg>
+                                            <Typography gutterBottom noWrap align="center">
+                                                {TITULO_PARAMETRO_NORMA_CIRSOC_201}
+                                            </Typography>
                                             <Grid container spacing={8}>
                                                 <Grid item xs={6} lg={6}>
-                                                    <Typography gutterBottom variant="caption">
-                                                        {MENSAJE_CUMPLE_NORMA}
+                                                    <Typography gutterBottom variant="caption" align="center">
                                                         <div className={classes.chipValido}>
                                                             &nbsp;
                                                         </div>
+                                                        {MENSAJE_CUMPLE_NORMA}
                                                     </Typography>
                                                 </Grid>
                                                 <Grid item xs={6} lg={6}>
-                                                    <Typography gutterBottom variant="caption">
-                                                        {MENSAJE_NO_CUMPLE_NORMA}
+                                                    <Typography gutterBottom variant="caption" align="center">
                                                         <div className={classes.chipInvalido}>
                                                             &nbsp;
                                                         </div>
+                                                        {MENSAJE_NO_CUMPLE_NORMA}
                                                     </Typography>
                                                 </Grid>
                                             </Grid>

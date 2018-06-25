@@ -1,12 +1,16 @@
 package edu.uade.server.negocio.impl;
 
 import edu.uade.server.dao.ConsultaDao;
+import edu.uade.server.dao.ValorDiagnosticoDao;
 import edu.uade.server.dto.*;
 import edu.uade.server.entity.*;
 import edu.uade.server.mapper.ConsultaMapper;
 import edu.uade.server.mapper.RouterCustom;
 import edu.uade.server.negocio.ConsultaNegocio;
+import net.sf.clipsrules.jni.CLIPSException;
 import net.sf.clipsrules.jni.Environment;
+import net.sf.clipsrules.jni.FactAddressValue;
+import net.sf.clipsrules.jni.PrimitiveValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -23,15 +27,17 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
     private static final String CLASSPATH = "classpath:";
     private final ResourceLoader resourceLoader;
     private final ConsultaDao consultaDao;
+    private final ValorDiagnosticoDao valorDiagnosticoDao;
     private Environment clips;
 
     @Value("${path.clips}")
     private String[] pathClip;
 
     @Autowired
-    public ConsultaNegocioImpl(@Value("${path.lib}") String pathLib, ConsultaDao consultaDao, ResourceLoader resourceLoader) {
+    public ConsultaNegocioImpl(@Value("${path.lib}") String pathLib, ConsultaDao consultaDao, ValorDiagnosticoDao valorDiagnosticoDao, ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
         this.consultaDao = consultaDao;
+        this.valorDiagnosticoDao = valorDiagnosticoDao;
 
         System.setProperty("java.library.path", pathLib);
         Field fieldSysPath;
@@ -77,15 +83,31 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
     }
 
     private ConsultaDto evaluarResultado(ConsultaDto consulta, Environment clips, RouterCustom router) {
+        DiagnosticoDto diagnosticoDto = new DiagnosticoDto();
 
         // AGREGOS LAS REGLAS APLICADAS
         List<String> reglasAplicadas = router.getBuffer();
         reglasAplicadas = reglasAplicadas.stream().filter(linea -> !linea.trim().isEmpty()).collect(Collectors.toList());
         consulta.setReglasAplicadas(reglasAplicadas);
 
-        // TODO OBTENER EL RESULTADO
-//        String resultado = clips.getInputBuffer();
+        // OBTENEMOS EL RESULTADO
+        try {
+            String variable = "?f";
+            String condicion = "(neq ?f:" + ConsultaMapper.SLOT_RESULTADO + " \"" +  ConsultaMapper.VALOR_SLOT_NO_ESPECIFICA + "\")";
+            FactAddressValue fact = clips.findFact(variable, ConsultaMapper.TEMPLATE_DIAGNOSTICO, condicion);
+            if (fact != null) {
+                PrimitiveValue slotValue = fact.getSlotValue(ConsultaMapper.SLOT_RESULTADO);
+                if (slotValue != null) {
+                    String valor = (String) slotValue.getValue();
+                    if (valor != null && !valor.trim().isEmpty()) {
+                        ValorDiagnosticoEntity valorDiagnosticoEntity = valorDiagnosticoDao.findByValorInferenciaLike(valor);
+                        diagnosticoDto.setValor(new ValorDiagnosticoDto(valorDiagnosticoEntity));
+                    }
+                }
+            }
+        } catch (CLIPSException ignore) {}
 
+        consulta.setDiagnostico(diagnosticoDto);
         return consulta;
     }
 
@@ -94,13 +116,29 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
 
         entity.setParametro(crearEntityConsultaParametro(consultaDto.getParametro()));
         entity.setFechaCreacion(consultaDto.getFechaCreacion());
-//        entity.setDiagnostico(null);
+        entity.setDiagnostico(crearEntityConsulta(consultaDto.getDiagnostico()));
         entity.setReglasAplicadas(consultaDto.getReglasAplicadas().stream().map(Object::toString).collect(Collectors.joining(",")));
 
         entity = consultaDao.save(entity);
 
         return new ConsultaDto(entity);
     }
+
+    private DiagnosticoEntity crearEntityConsulta(DiagnosticoDto dto) {
+        DiagnosticoEntity entity = null;
+        if (dto != null && dto.getValor() != null) {
+            entity = new DiagnosticoEntity();
+            entity.setValor(crearEntityValorDiagnostico(dto.getValor()));
+        }
+        return entity;
+    }
+
+    private ValorDiagnosticoEntity crearEntityValorDiagnostico(ValorDiagnosticoDto dto) {
+        ValorDiagnosticoEntity valorDiagnosticoEntity = new ValorDiagnosticoEntity();
+        valorDiagnosticoEntity.setCodigo(dto.getCodigo());
+        return valorDiagnosticoEntity;
+    }
+
     private ConsultaParametroEntity crearEntityConsultaParametro(ConsultaParametroDto dto) {
         ConsultaParametroEntity entity = new ConsultaParametroEntity();
 

@@ -85,7 +85,7 @@ class PageIndex extends React.Component {
                         {/*<img src={IMAGEN_TITULO} alt={TITULO_APLICATIVO} className={classes.centradoImagen}/>*/}
                         <Typography variant="display4" className={classes.centradoTexto}>
                         </Typography>
-                        <Button component={LinkCustom} variant="contained" className={classNames(classes.button, classes.centrado)}>
+                        <Button component={LinkCustom} variant="contained" size="large" className={classNames(classes.button, classes.centrado)}>
                             {MENSAJE_INICIO}
                         </Button>
                     </div>

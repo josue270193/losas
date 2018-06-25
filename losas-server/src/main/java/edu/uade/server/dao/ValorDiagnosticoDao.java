@@ -5,4 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ValorDiagnosticoDao extends CrudRepository<ValorDiagnosticoEntity, Long> {
 
+    ValorDiagnosticoEntity findByValorInferenciaLike(String valorInferencia);
+
 }

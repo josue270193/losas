@@ -16,6 +16,10 @@ public class DiagnosticoDto {
     private ValorDiagnosticoDto valor;
     private List<ValorDiagnosticoPosibilidadDto> valoresPosibilidad = new ArrayList<>();
 
+    public DiagnosticoDto() {
+
+    }
+
     public DiagnosticoDto(DiagnosticoEntity entity) {
         if (entity != null){
             setCodigo(entity.getCodigo());

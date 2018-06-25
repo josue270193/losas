@@ -18,7 +18,15 @@ public class ConsultaMapper {
     private static final String TEMPLATE_FENOMENO_PATOLOGICO = "fenomeno-patologico";
     private static final String TEMPLATE_EVALUACION_NO_DESTRUCTIVA = "evaluacion-no-destructiva";
     private static final String TEMPLATE_EVALUACION_DESTRUCTIVA = "propiedades-fq-concreto";
-    private static final String TEMPLATE_DIAGNOSTICO = "diagnostico";
+
+    public static final String TEMPLATE_DIAGNOSTICO = "diagnostico";
+    public static final String SLOT_RESULTADO = "resultado";
+    public static final String SLOT_TIPO = "tipo";
+    public static final String SLOT_SUBTIPO = "subtipo";
+    public static final String SLOT_TIPO_QUIMICO = "tipoQuimico";
+    public static final String SLOT_TIPO_REACTIVO = "tipoReactivo";
+    public static final String VALOR_SLOT_NO_ESPECIFICA = "no especifica";
+
     private static final String SLOT_RELACION_TIEMPO = "relacion-tiempo";
     private static final String SLOT_ESPECIFICACION_CONSTRUCCION = "cumple-especificaciones-construccion";
     private static final String SLOT_DIMENSION_PLANO = "cumple-dimensiones-plano";
@@ -26,6 +34,7 @@ public class ConsultaMapper {
     private static final String SLOT_HUMEDAD_RELATIVA = "cumple-humedad-relativa-construccion-norma-cirsoc-201";
     private static final String SLOT_MEMORIA_CALCULO = "cuenta-memorias-calculo";
     private static final String VALOR_SLOT_EXISTE = "existe";
+    private static final String VALOR_SLOT_SE_EVALUA = "se evalua";
     private static final String VALOR_SLOT_NO_EXISTE = "no existe";
 
     public static List<String> mapConsulta(ConsultaDto consulta) {
@@ -53,45 +62,26 @@ public class ConsultaMapper {
     }
 
     private static String mapEvaluacionDestructiva(List<EvaluacionDestructivaDto> dtos) {
-        List<String> multislot = new ArrayList<String>();
+        StringBuilder slots = new StringBuilder();
 
-        for (EvaluacionDestructivaDto eval : dtos) {
-            StringBuilder slots = new StringBuilder();
-            // Evaluacion
-            if(eval.getCumpleNorma()) {
-
-            } else {
-
-            }
-
-            // Valor
-            ValorEvaluacionDestructivaDto valor = eval.getValor();
-            slots.append("(");
-            slots.append(valor.getDescripcion());
-            slots.append(" ");
-            slots.append(valor.getValorInferencia());
-            slots.append(")");
-            multislot.add(slots.toString());
+        for (EvaluacionDestructivaDto dto : dtos){
+            slots.append(String.format(BUILD_SLOT, dto.getValor().getValorInferencia(), VALOR_SLOT_EXISTE));
+            slots.append(ESPACIO);
         }
-        String template = String.format(BUILD_TEMPLATE, TEMPLATE_EVALUACION_DESTRUCTIVA, String.join(" ", multislot));
+
+        String template = String.format(BUILD_TEMPLATE, TEMPLATE_EVALUACION_DESTRUCTIVA, slots);
         return String.format(BUILD_TEMPLATE, ASSERT, template);
     }
 
     private static String mapEvaluacionNoDestructiva(List<EvaluacionNoDestructivaDto> dtos) {
-        List<String> multislot = new ArrayList<String>();
+        StringBuilder slots = new StringBuilder();
 
-        for (EvaluacionNoDestructivaDto eval : dtos) {
-            StringBuilder slots = new StringBuilder();
-            ValorEvaluacionNoDestructivaDto valor = eval.getValor();
-            slots.append("(");
-            slots.append(valor.getDescripcion());
-            slots.append(" ");
-            slots.append(valor.getValorInferencia());
-            slots.append(")");
-            multislot.add(slots.toString());
+        for (EvaluacionNoDestructivaDto dto : dtos){
+            slots.append(String.format(BUILD_SLOT, dto.getValor().getValorInferencia(), VALOR_SLOT_SE_EVALUA));
+            slots.append(ESPACIO);
         }
 
-        String template = String.format(BUILD_TEMPLATE, TEMPLATE_EVALUACION_NO_DESTRUCTIVA, String.join(" ", multislot));
+        String template = String.format(BUILD_TEMPLATE, TEMPLATE_EVALUACION_NO_DESTRUCTIVA, slots);
         return String.format(BUILD_TEMPLATE, ASSERT, template);
     }
 

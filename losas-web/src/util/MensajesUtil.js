@@ -1,9 +1,90 @@
 import moment from "moment";
 import {obtenerConfiguracionCache} from "../data/DataConfig";
+// import imagen_unknown from "./../assets/unknown.jpg"
+import imagen_1 from "./../assets/1.jpg"
+import imagen_2 from "./../assets/2.jpg"
+import imagen_3 from "./../assets/3.jpg"
+import imagen_4 from "./../assets/4.jpg"
+import imagen_5 from "./../assets/5.jpg"
+import imagen_6 from "./../assets/6.jpg"
+import imagen_7 from "./../assets/7.png"
+import imagen_8 from "./../assets/8.jpg"
+import imagen_9 from "./../assets/9.png"
+import imagen_10 from "./../assets/10.jpg"
+import imagen_11 from "./../assets/11.jpg"
+import imagen_12 from "./../assets/12.jpg"
+import imagen_13 from "./../assets/13.jpg"
 
-import imagen_unknown from "./../assets/unknown.jpg"
 import imagen_desconocido from "./../assets/desconocido.jpg"
 import imagen_titulo from "./../assets/titulo.jpeg"
+
+const ARRAY_DESCRIPCION = [
+    {
+        codigo: "error de diseno",
+        descripcion: "Grietas, longitudinal, en la mitad, en esquinas a 45 º, deflexiones, falta de recubrimiento, o falta de acero",
+        foto: imagen_1
+    },
+    {
+        codigo: "error de construccion",
+        descripcion: "Grietas, deflexiones en el centro, polvo, corrosión, desmoronamiento, grietas en los apoyos, falta de acero, mala colocación del acero",
+        foto: imagen_2
+    },
+    {
+        codigo: "sobrecarga excesiva",
+        descripcion: "Grietas, puntuales, en la mitad de la losa, deflexiones, desprendimiento, polvo",
+        foto: imagen_3
+    },
+    {
+        codigo: "retracción hidraulica",
+        descripcion: "Fisuras, en malla, polvo, superficial, numerosas",
+        foto: imagen_4
+    },
+    {
+        codigo: "retraccion plastica",
+        descripcion: "Grietas, fisuran 45 en esquinas, longitudinal, polvo",
+        foto: imagen_5
+    },
+    {
+        codigo: "corrosion",
+        descripcion: "Grietas, desplome, cambio de masa, polvo, color rojizo",
+        foto: imagen_6
+    },
+    {
+        codigo: "congelamiento o deshielo",
+        descripcion: "Desmoronamiento, cambio de masa , grietas, polvo laminación, desprendimiento",
+        foto: imagen_7
+    },
+    {
+        codigo: "reactividad de agregados al ataque de alcali-carbonato",
+        descripcion: "Agrietamiento, fisuras cambio de masa, desmoronamieto, color oscuro",
+        foto: imagen_8
+    },
+    {
+        codigo: "reactividad de agregados al ataque de alcali-silice",
+        descripcion: "Agrietamiento, fisuras,, laminación, polvo, color blanco",
+        foto: imagen_9
+    },
+    {
+        codigo: "reactividad de agregados al ataque de sulfatos",
+        descripcion: "Agrietamiento, fisuras, desmoronamento, cambio de masa color amarillento",
+        foto: imagen_10
+    },
+    {
+        codigo: "reactividad de agregados al ataque de cloruros",
+        descripcion: "Grietas, cambio de masa, fisuras, desmoronamiento, polvo, colr cristaliono, corrosión del acero",
+        foto: imagen_11
+    },
+    {
+        codigo: "esfuerzo termico",
+        descripcion: "Grietas, desplome, cambio de masa, polvo, corrosión del acero, cambio de color",
+        foto: imagen_12
+    },
+    {
+        codigo: "ausencia de acero de refuerzo",
+        descripcion: "Grietas profundas, desmoronamiento, laminación, cambio de masa, polvo",
+        foto: imagen_13
+    },
+];
 
 export const TITULO_APLICATIVO = "Losas";
 
@@ -37,81 +118,20 @@ export const MENSAJE_VALOR_DIAGNOSTICO = (codigo) => {
 };
 export const MENSAJE_DESCRIPCION_CASO = (codigo) => {
     let itemCodigo = obtenerConfiguracionCache()['valoresDiagnostico'].find((i) => i.codigo === codigo);
-    let elemento = ARRAY_DESCRIPCION.find((item) => item.codigo === itemCodigo);
+    let elemento;
+    if (itemCodigo) {
+        elemento = ARRAY_DESCRIPCION.find((item) => item.codigo === itemCodigo.valorInferencia);
+    }
     return (elemento && elemento.descripcion) || 'Sin data';
 };
-const ARRAY_DESCRIPCION = [
-    {
-        codigo: "error de diseno",
-        descripcion: "",
-        foto: imagen_unknown
-    },
-    {
-        codigo: "error de construccion",
-        descripcion: "",
-        foto: imagen_unknown
-    },
-    {
-        codigo: "sobrecarga excesiva",
-        descripcion: "",
-        foto: imagen_unknown
-    },
-    {
-        codigo: "retracción hidraulica",
-        descripcion: "",
-        foto: imagen_unknown
-    },
-    {
-        codigo: "retraccion plastica",
-        descripcion: "",
-        foto: imagen_unknown
-    },
-    {
-        codigo: "corrosion",
-        descripcion: "",
-        foto: imagen_unknown
-    },
-    {
-        codigo: "congelamiento o deshielo",
-        descripcion: "",
-        foto: imagen_unknown
-    },
-    {
-        codigo: "reactividad de agregados al ataque de alcali-carbonato",
-        descripcion: "",
-        foto: imagen_unknown
-    },
-    {
-        codigo: "reactividad de agregados al ataque de alcali-silice",
-        descripcion: "",
-        foto: imagen_unknown
-    },
-    {
-        codigo: "reactividad de agregados al ataque de sulfatos",
-        descripcion: "",
-        foto: imagen_unknown
-    },
-    {
-        codigo: "reactividad de agregados al ataque de cloruros",
-        descripcion: "",
-        foto: imagen_unknown
-    },
-    {
-        codigo: "esfuerzo termico",
-        descripcion: "",
-        foto: imagen_unknown
-    },
-    {
-        codigo: "ausencia de acero de refuerzo",
-        descripcion: "",
-        foto: imagen_unknown
-    },
-];
 
 export const IMAGEN_TITULO = imagen_titulo;
 export const IMAGEN_VALOR_DIAGNOSTICO = (codigo) => {
     let itemCodigo = obtenerConfiguracionCache()['valoresDiagnostico'].find((i) => i.codigo === codigo);
-    let elemento = ARRAY_DESCRIPCION.find((item) => item.codigo === itemCodigo);
+    let elemento;
+    if (itemCodigo) {
+        elemento = ARRAY_DESCRIPCION.find((item) => item.codigo === itemCodigo.valorInferencia);
+    }
     return (elemento && elemento.foto) || imagen_desconocido;
 };
 
@@ -141,3 +161,4 @@ export const TITULO_VER_CONSULTA_SUBTITULO = (id) => "Codigo Nº " + id;
 export const TITULO_DIAGNOSTICO_RESPUESTA = "Respuesta";
 export const TITULO_DIAGNOSTICO_PARAMETROS = "Parámetros";
 export const TITULO_REGLAS_APLICADAS = "Reglas Aplicadas";
+export const TITULO_PARAMETRO_NORMA_CIRSOC_201 = "CIRSOC 201";
