@@ -19,6 +19,11 @@ public class ConsultaDto {
     private Date fechaCreacion;
     private List<String> reglasAplicadas = new ArrayList<>();
 
+
+    public ConsultaDto() {
+
+    }
+
     public ConsultaDto(ConsultaEntity entity) {
         if (entity != null){
             setCodigo(entity.getCodigo());

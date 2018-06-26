@@ -17,6 +17,10 @@ public class EvaluacionLosaDto {
     private RelacionFechaEnum relacionFecha;
     private List<ValorInicialDto> valoresInicial = new ArrayList<>();
 
+    public EvaluacionLosaDto() {
+
+    }
+
     public EvaluacionLosaDto(EvaluacionLosaEntity entity) {
         if (entity != null){
             setCodigo(entity.getCodigo());

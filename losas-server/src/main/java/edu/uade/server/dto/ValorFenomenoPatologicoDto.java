@@ -12,6 +12,10 @@ public class ValorFenomenoPatologicoDto {
     private String descripcion;
     private String valorInferencia;
 
+    public ValorFenomenoPatologicoDto() {
+
+    }
+
     public ValorFenomenoPatologicoDto(ValorFenomenoPatologicoEntity entity) {
         this.codigo = entity.getCodigo();
         this.descripcion = entity.getDescripcion();

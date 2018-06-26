@@ -12,6 +12,10 @@ public class ValorInicialDto {
     private String descripcion;
     private String valorInferencia;
 
+    public ValorInicialDto() {
+
+    }
+
     public ValorInicialDto(ValorInicialEntity entity) {
         this.codigo = entity.getCodigo();
         this.descripcion = entity.getDescripcion();

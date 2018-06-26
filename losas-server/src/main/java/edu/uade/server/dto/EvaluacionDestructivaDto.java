@@ -12,6 +12,10 @@ public class EvaluacionDestructivaDto {
     private ValorEvaluacionDestructivaDto valor;
     private Boolean cumpleNorma;
 
+    public EvaluacionDestructivaDto() {
+
+    }
+
     public EvaluacionDestructivaDto(EvaluacionDestructivaEntity entity) {
         if (entity != null){
             setCodigo(entity.getCodigo());

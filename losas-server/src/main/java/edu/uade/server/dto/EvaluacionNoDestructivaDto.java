@@ -14,6 +14,10 @@ public class EvaluacionNoDestructivaDto {
     private Boolean cumpleNorma;
     private ColorEvaluacionEnum colorEvaluacion;
 
+    public EvaluacionNoDestructivaDto() {
+
+    }
+
     public EvaluacionNoDestructivaDto(EvaluacionNoDestructivaEntity entity) {
         if (entity != null){
             setCodigo(entity.getCodigo());

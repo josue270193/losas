@@ -12,6 +12,10 @@ public class ValorEvaluacionDestructivaDto {
     private String descripcion;
     private String valorInferencia;
 
+    public ValorEvaluacionDestructivaDto() {
+
+    }
+
     public ValorEvaluacionDestructivaDto(ValorEvaluacionDestructivaEntity entity) {
         this.codigo = entity.getCodigo();
         this.descripcion = entity.getDescripcion();

@@ -14,6 +14,10 @@ public class EvaluacionFenomenoPatologicoDto {
     private UbicacionFenomenoEnum ubicacion;
     private Boolean cumpleNorma;
 
+    public EvaluacionFenomenoPatologicoDto() {
+
+    }
+
     public EvaluacionFenomenoPatologicoDto(EvaluacionFenomenoPatologicoEntity entity) {
         if (entity != null){
             setCodigo(entity.getCodigo());

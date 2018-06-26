@@ -12,6 +12,10 @@ public class ValorDiagnosticoPosibilidadDto {
     private String descripcion;
     private String valorInferencia;
 
+    public ValorDiagnosticoPosibilidadDto() {
+
+    }
+
     public ValorDiagnosticoPosibilidadDto(ValorDiagnosticoPosibilidadEntity entity) {
         this.codigo = entity.getCodigo();
         this.descripcion = entity.getDescripcion();

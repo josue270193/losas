@@ -18,6 +18,10 @@ public class ConsultaParametroDto {
     private List<EvaluacionNoDestructivaDto> evaluacionesNoDestructiva = new ArrayList<>();
     private List<EvaluacionDestructivaDto> evaluacionesDestructiva = new ArrayList<>();
 
+    public ConsultaParametroDto() {
+
+    }
+
     public ConsultaParametroDto(ConsultaParametroEntity entity) {
         if (entity != null) {
             setCodigo(entity.getCodigo());
