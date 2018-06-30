@@ -11,11 +11,14 @@ import net.sf.clipsrules.jni.CLIPSException;
 import net.sf.clipsrules.jni.Environment;
 import net.sf.clipsrules.jni.FactAddressValue;
 import net.sf.clipsrules.jni.PrimitiveValue;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -24,7 +27,12 @@ import java.util.stream.Collectors;
 @Service
 public class ConsultaNegocioImpl implements ConsultaNegocio {
 
+
+    private static Logger logger = LogManager.getLogger();
     private static final String CLASSPATH = "classpath:";
+    private static final String KEY_JAVA_PATH = "java.library.path";
+    private static final String TERMINACION_PATH = ";";
+
     private final ResourceLoader resourceLoader;
     private final ConsultaDao consultaDao;
     private final ValorDiagnosticoDao valorDiagnosticoDao;
@@ -39,13 +47,26 @@ public class ConsultaNegocioImpl implements ConsultaNegocio {
         this.consultaDao = consultaDao;
         this.valorDiagnosticoDao = valorDiagnosticoDao;
 
-        System.setProperty("java.library.path", pathLib);
-        Field fieldSysPath;
         try {
-            fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
+            String pathClip = ResourceUtils.getFile(CLASSPATH + pathLib).getAbsolutePath();
+            StringBuilder javaPath = new StringBuilder(System.getProperty(KEY_JAVA_PATH));
+            javaPath.append(TERMINACION_PATH);
+            javaPath.append(pathClip);
+            javaPath.append(TERMINACION_PATH);
+
+            logger.info("JAVA PATH ANTERIOR");
+            logger.info(System.getProperty(KEY_JAVA_PATH));
+            logger.info("JAVA PATH NUEVO");
+            logger.info(javaPath.toString());
+            logger.info("PATH CLIPS");
+            logger.info(pathClip);
+
+            System.setProperty(KEY_JAVA_PATH, javaPath.toString());
+
+            Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
             fieldSysPath.setAccessible(true);
             fieldSysPath.set(null, null);
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

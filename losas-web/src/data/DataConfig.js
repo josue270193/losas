@@ -97,7 +97,6 @@ async function requestObtenerConfiguracionInicial() {
 }
 
 function procesarError(error) {
-    console.log(error);
     let mensaje;
     if (error.response && error.response.data) {
         if (typeof error.response.data === "string"){
@@ -113,15 +112,23 @@ function procesarError(error) {
     return mensaje;
 }
 
-export function mostrarMensajeError(mensaje) {
+function renderMensajeError(show, message = '', onClose = () => {}, type = 'error') {
     ReactDOM.render(
         <MensajeError
-            variant="error"
-            open={true}
-            mensaje={mensaje}
+            variant={type}
+            open={show}
+            mensaje={message}
+            onCerrarMensaje={onClose}
         />,
         document.getElementById('mensaje_error')
     );
+}
+
+const onCerrarMensajeError = () => {
+    renderMensajeError(false);
+};
+export function mostrarMensajeError(mensaje) {
+    renderMensajeError(true, mensaje, onCerrarMensajeError);
 }
 
 function procesarJsonField(json) {

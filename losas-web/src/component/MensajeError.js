@@ -49,33 +49,15 @@ const styles = (theme) => ({
 
 class MensajeError extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            open: props.open
-        };
-    }
-
-    static getDerivedStateFromProps(props, state) {
-        return {
-            open: props.open === state.open
-        }
-    }
-
-    onCerrarMensaje= () => {
-        this.setState({ open: false });
-    };
-
     render(){
-        const { classes, mensaje, variant } = this.props;
-        const { open } = this.state;
+        const { classes, mensaje, variant, open, onCerrarMensaje } = this.props;
         const Icon = variantIcon[variant];
 
         return (
             <Snackbar
                 anchorOrigin={{ vertical: 'top', horizontal: 'center'}}
                 open={open}
-                onClose={this.onCerrarMensaje}
+                onClose={onCerrarMensaje}
                 ContentProps={{
                     'aria-describedby': 'message-id',
                     className: classes[variant],
@@ -95,7 +77,7 @@ class MensajeError extends React.Component {
                         aria-label="Cerrar"
                         color="inherit"
                         className={classes.close}
-                        onClick={this.onCerrarMensaje}
+                        onClick={onCerrarMensaje}
                     >
                         <CloseIcon />
                     </IconButton>,
@@ -110,7 +92,8 @@ MensajeError.propTypes = {
     theme: PropTypes.object.isRequired,
     mensaje: PropTypes.string.isRequired,
     variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
-    open: PropTypes.bool
+    open: PropTypes.bool.isRequired,
+    onCerrarMensaje: PropTypes.func.isRequired
 };
 
 export default withStyles(styles, {withTheme: true})(MensajeError)

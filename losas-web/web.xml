@@ -1,4 +1,4 @@
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0">
     <display-name>create-react-app-servlet</display-name>
     <error-page>
         <error-code>404</error-code>
